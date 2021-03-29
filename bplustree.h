@@ -56,6 +56,8 @@ vector<string> readFile(string name)
     {
       toReturn.push_back(lineOfInput);  // append line to the vector
       std::cout << lineOfInput << endl; // print line out for debugging
+
+      
     }
       // close the file
       file.close();
