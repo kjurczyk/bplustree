@@ -1,4 +1,5 @@
-#include "bplustree.h"
+//#include "bplustree.h"
+#include "methods.h"
 
 
 ////////////////////////////////////////////////
@@ -16,6 +17,9 @@ int main(int argc, char ** argv)
 {
   // create a string to hold the filename
   string file_name = "";
+
+  // create a new bplustree object
+  BPTree * bpt = new BPTree();
 
   // create an array to hold the values for the command, first, and second numbers
   // the first slot will be the command
@@ -76,11 +80,19 @@ int main(int argc, char ** argv)
     {
       //toReturn.push_back(lineOfInput);  // append line to the vector
       std::cout << lineOfInput << endl; // print line out for debugging
-      //command[0] = getCommand(lineOfInput);
-      
+      command[0] = getCommand(lineOfInput);
+      command[1] = getFirstNum(lineOfInput);
+      command[2] = getSecondNum(lineOfInput);
+      //std::cout << command[2] << endl;
+      // now that we've successfully gotten the numbers and the command, it
+      // is time to enter everything into the tree
+      doStuffWithCommand(command);
+
     }
       // close the file
       file.close();
+      // print the bplus tree
+      //cout << "root node is" + bpt->rootNode->info << endl;
 	}
   else  // if the file was not able to be opened
   {
