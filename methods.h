@@ -91,20 +91,69 @@ string getSecondNum(string s)
 // numbers from the array it was given from the main function
 // returns the new tree
 ////////////////////////////////////////////////////////////
-void doStuffWithCommand(string instructions[3])
+void doStuffWithCommand(string instructions[3], BPTree &bpt)
 {
-  
-  if(instructions[0] == "Initialize") // we assume that initialize is always spelled like this
+  //std::cout << instructions[0] + " has been called" << endl;
+  if(instructions[0].find("Initialize") != std::string::npos) // we assume that initialize is always spelled like this
   {
-    std::cout <<"initialize has been called" << endl;
+    //std::cout << "initialize has been called" << endl;
     bpt.initialize(std::stoi(instructions[1]));
+  }
+  else if(instructions[0].find("Insert") != std::string::npos) // looks like Insert(key, value)
+  {
+    //std::cout << "insert has been called" << endl;
+    // call insert(key, value)
+    bpt.insert(std::stoi(instructions[1]), std::stof(instructions[2]));
+  }
+  else if(instructions[0].find("Delete") != std::string::npos) // delete a key
+  {
+    bpt.deletePair(std::stoi(instructions[1]));
+  }
+  else//(instructions[0].find("Search") != std::string::npos)  // the only other option is that this is a search. It returns the value associated with the key
+  {
+    // send it to the appropriate search function
+    if(instructions[2] == "na") // if there is only one value, just send the first
+    {
+      bpt.search(std::stoi(instructions[1]));
+    }
+    else
+    {
+      bpt.search(std::stoi(instructions[1]), std::stof(instructions[2]));
+    }
   }
    
 }
 
-void BPTree::initialize(int)
+// returns the value associated with the key
+void BPTree::search(int key, int key2)
 {
+  
+  std::cout << "key1: " << key << "key2: " << key2 << endl;
+}
 
+// returns the value associated with the key
+void BPTree::search(int key)
+{
+  
+  std::cout << "key: " << key << endl;
+}
+
+void BPTree::deletePair(int key)
+{
+  
+  std::cout << "key: " << key << endl;
+}
+
+// void BPTree::insert(int key, float value)
+// {
+  
+//   std::cout << "key: " << key << ", value: " << value << endl;
+// }
+
+void BPTree::initialize(int m)
+{
+  maxNodes = m;
+  std::cout << "maxNodes set to " << maxNodes << endl;
 }
 
 //////////////////////////////////////////////////////////////

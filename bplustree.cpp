@@ -86,7 +86,7 @@ int main(int argc, char ** argv)
       //std::cout << command[2] << endl;
       // now that we've successfully gotten the numbers and the command, it
       // is time to enter everything into the tree
-      doStuffWithCommand(command);
+      doStuffWithCommand(command, *bpt);
 
     }
       // close the file
