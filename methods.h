@@ -150,11 +150,11 @@ void BPTree::deletePair(int key)
 //   std::cout << "key: " << key << ", value: " << value << endl;
 // }
 
-void BPTree::initialize(int m)
-{
-  maxNodes = m;
-  std::cout << "maxNodes set to " << maxNodes << endl;
-}
+// void BPTree::initialize(int m)
+// {
+//   maxNodes = m;
+//   std::cout << "maxNodes set to " << maxNodes << endl;
+// }
 
 //////////////////////////////////////////////////////////////
 // checks that the file is valid - if not, it will return 1 and print 
