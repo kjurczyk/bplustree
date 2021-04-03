@@ -87,7 +87,8 @@ int main(int argc, char ** argv)
       // now that we've successfully gotten the numbers and the command, it
       // is time to enter everything into the tree
       doStuffWithCommand(command, *bpt);
-
+      //cout << "the tree now looks like " << endl;
+      //bpt->printBPTree();
     }
       // close the file
       file.close();

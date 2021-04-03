@@ -176,7 +176,7 @@ class BPTree
     // compare the key to the root node keys - if there are no more keys to go through, drop out
     while(i < seeker->numKeys) // if it's a leaf, that's what we are looking for
     {
-      cout << "i: " << i << endl;
+      //cout << "i: " << i << endl;
       if(seeker->typeOfNode == LEAF)
       {
         i = seeker->numKeys;
@@ -234,10 +234,10 @@ class BPTree
         }
         // insert into the appropriate location in the array
           spot->keys[location] = key;
-          cout << "added key: " << spot->keys[location] << " at location: " << location << endl;
+          cout << "----------------added key: " << spot->keys[location] << " at location: " << location << endl;
           spot->keyValues[location] = * new Pair(key, value);
           spot->numKeys = spot->numKeys+1;
-          std::cout << "\tnumber of keys: " << spot->numKeys << endl;
+          //std::cout << "\tnumber of keys: " << spot->numKeys << endl;
           //std::cout << "/tthe number of keys in this node is " + spot->numKeys << " test" << endl;
         
         // std::vector<Pair>::iterator it = spot->keyValues.begin();
@@ -306,6 +306,7 @@ class BPTree
           rootNode->children[1] = rootNode->children[0];
           rootNode->children[0] = spot; // it's smaller so just move the other one over
           rootNode->numKids = 2;
+          
           // there is also a sibling
           spot->nextLeaf = largeNode;
           largeNode->prevLeaf = spot;
@@ -321,7 +322,13 @@ class BPTree
           // this wasn't the parent, so work your way up the tree
           // find the parent of spot
           // add the pointer into the parent of spot (if possible)
-          addPointerToIndex(spot->parent, pointerNode);
+          //while(spot->numKeys >= maxKeys)
+          //{
+            addPointerToIndex(spot->parent, pointerNode);
+            //spot = spot->parent;
+            printBPTree();
+          //}
+          
           // add the pointernode to the parent (or try to)
         }
       }
@@ -357,7 +364,7 @@ class BPTree
           cout << "added key: " << p->keys[location] << " at location: " << location << endl;
           p->children[location] = toAdd->children[0];
           p->numKeys = p->numKeys+1;
-          std::cout << "\tnumber of keys: " << p->numKeys << endl;
+          //std::cout << "\tnumber of keys: " << p->numKeys << endl;
        
         printNodeKeys(p->numKeys, p->keys);
         
@@ -507,6 +514,9 @@ class BPTree
   void printBPTree()
   {
     printNode(rootNode);
+    printNode(rootNode->children[0]);
+    printNode(rootNode->children[1]);
+
   }
 
 };
