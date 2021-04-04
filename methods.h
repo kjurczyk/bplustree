@@ -6,6 +6,7 @@ using std::string;
 using namespace std;
 #include <locale>         // std::locale, std::tolower
 #include "bplustree.h"
+//#include "bpt2.h"
 
 ///////////////////////////////////////////////////////////////
 // return what the command is

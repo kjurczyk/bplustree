@@ -303,6 +303,11 @@ class BPTree
           // add spot (aka the smallNode remade) as the smaller pointer
           // so basically, add it on the correct side of the other node
           spot->parent = rootNode;
+          cout << "ASSINGING SPOT->PARENT" << endl;
+    
+          printNode(spot->parent);
+          // go through all the children and put them in the correct order
+          // the rightmost one should be the largest, the leftmost should be the smallest
           rootNode->children[1] = rootNode->children[0];
           rootNode->children[0] = spot; // it's smaller so just move the other one over
           rootNode->numKids = 2;
@@ -310,6 +315,7 @@ class BPTree
           // there is also a sibling
           spot->nextLeaf = largeNode;
           largeNode->prevLeaf = spot;
+          largeNode->parent = rootNode;
           // print the new children of the root
           cout << "small child" << endl;
           printNode(spot);
@@ -318,13 +324,16 @@ class BPTree
         }
         else  // if this is not the root
         {
-          cout << "this wasn't the parent so I need to work my way back up" << endl;
+          cout << "this wasn't the root so I need to work my way back up" << endl;
           // this wasn't the parent, so work your way up the tree
           // find the parent of spot
           // add the pointer into the parent of spot (if possible)
           //while(spot->numKeys >= maxKeys)
           //{
+            cout << "parent" << endl;
+            printNode(spot->parent);
             addPointerToIndex(spot->parent, pointerNode);
+            
             //spot = spot->parent;
             printBPTree();
           //}
@@ -332,13 +341,39 @@ class BPTree
           // add the pointernode to the parent (or try to)
         }
       }
+      setAllChildren(rootNode); // FIXES ISSUE OF WRONG PARENT BEING ASSIGNED TO SOME NODES
   }
 
-  // add the toAdd nodepointer to p
+  void setAllChildren(nodePointer parent)
+  {
+    cout << "There are " << parent->numKids << " children " << endl;
+    for(int i = 0; i < parent->numKids; i++)
+    {
+      cout << "i: " << i << endl;
+      parent->children[i]->parent = parent;
+    }
+    cout << "finished" << endl;
+  }
+
+  nodePointer findParent(nodePointer seeker, nodePointer child)
+  {
+    nodePointer parent;
+    if(seeker->typeOfNode == LEAF || seeker->children[0]->typeOfNode == LEAF)
+    {
+      return NULL;
+    }
+  }
+
+  // add the toAdd nodepointer key and children to p
   // after adding, check if it is legal
   // call to add a pointer to an index or root node that is not a leaf node
+  // retrain the new children of p to see it as the parent and not the original parent
   void addPointerToIndex(nodePointer p, nodePointer toAdd)
   {
+    if(p->isRoot)
+    {
+      cout << "THIS IS THE ROOT";
+    }
     std::cout << "\tnumber of keys before adding to index: " << p->numKeys << endl;
     // toAdd only has one possible key because it's a pointer, so just worry about that
     //if(toAdd->key[0]) // add the key in the correct location
@@ -352,7 +387,7 @@ class BPTree
           {
             location = i;
             p->keys[i+1] = p->keys[i];  // move it over by 1 so that the i spot can be overwritten
-            p->children[i+1] = p->children[i];  // change the children instead of the values
+            //p->children[i+1] = p->children[i];  // change the children instead of the values
           }
           else  // we've reached the smallest location 
           {  
@@ -362,8 +397,13 @@ class BPTree
         // insert into the appropriate location in the array
           p->keys[location] = toAdd->keys[0];
           cout << "added key: " << p->keys[location] << " at location: " << location << endl;
-          p->children[location] = toAdd->children[0];
+          // the location for the children might not be the same
+          //p->children[location] = toAdd->children[0];
+          p->children[p->numKids] = toAdd->children[0];
+          p->numKids++;
+          selectionSort(p->children, p->numKids);
           p->numKeys = p->numKeys+1;
+          p->children[location]->parent = p;
           //std::cout << "\tnumber of keys: " << p->numKeys << endl;
        
         printNodeKeys(p->numKeys, p->keys);
@@ -377,8 +417,110 @@ class BPTree
       // is the new p pointer legally placed? i.e., is number of keys less than or equal to max keys
       if(p->numKeys > maxKeys)
       {
-        cout << "yikes. This is a problem" << endl;
+        cout << "This was an illegal add to an index node. Fix it, and then call this function again." << endl;
+        nodePointer newNode = fixIllegalIndexAdd(p);  // I received a node pointing back
+        // let me check if the node p is the root node
+        cout << "this is a test" << endl;
+        if(p->isRoot)
+        {
+          cout << "Wow, this was the root. Oh well, I'm making it an index node now." << endl;
+          p->isRoot = false;
+          p->typeOfNode = INDEX;
+          // set the parent to be the new node that was returned
+          p->parent = newNode;
+          addChild(newNode, p);
+          setAllChildren(newNode);
+          rootNode = newNode;
+        }
+        else // this was not the root
+        {
+          // just move up again by calling addPointerToIndex and giving it newNode
+          addPointerToIndex(p->parent, newNode);
+        }
       }
+  }
+
+  // adds the child to the given parent in the correct location
+  void addChild(nodePointer parent, nodePointer childToBe)
+  {
+    // add the child
+    cout << "number of children in addchild function: " << parent->numKids << endl;
+    parent->children[parent->numKids] = childToBe;
+    parent->numKids++;
+    // sort with the selectionsort
+    selectionSort(parent->children, parent->numKids);
+  }
+
+  // fixes an illegal add to an index node by doing stuff. Perhaps need to split the node
+  nodePointer fixIllegalIndexAdd(nodePointer p)
+  {
+    // split the node
+    int smallestLargeSpot = (maxKeys+1)/2;
+    nodePointer smallNode = getSmallestIndexNode(p->keys, smallestLargeSpot);
+    cout<< "successfully created a small Index node:" << endl;
+    printNodeKeys(smallNode->numKeys, smallNode->keys);
+    nodePointer largeNode = getLargestIndexNode(p->keys, smallestLargeSpot, p->numKeys);
+    cout<< "successfully created a large node:" << endl;
+    printNodeKeys(largeNode->numKeys, largeNode->keys);
+
+    // now that we have the index nodes for the smallest and largest, we need to make sure the
+    // children are properly assigned. COME BACK HERE IF CHILDREN ARE INCORRECT
+    // who gets which children? There are currently 4 children
+    smallestLargeSpot = maxKeys + 1 - (maxKeys+1)/2;
+    assignChildren(smallNode, p, 0, smallestLargeSpot);  // the node that will get the children, the node that currently has the children, how many children it gets
+    assignChildren(largeNode, p, smallestLargeSpot, p->numKids);  // assign the children to the appropriate parent
+    
+    setAllChildren(smallNode);  // assign the children to know who their parents are
+    setAllChildren(largeNode);  // assign the children to know who their parents are
+  //cout << "here" << endl;
+    // now we need to set the original p to be equal to the new small node
+    p->numKeys = smallNode->numKeys;
+    p->children = smallNode->children;
+    p->keys = smallNode->keys;
+    p->keyValues = smallNode->keyValues;
+    p->numKids = smallNode->numKids;
+    //cout << "here" << endl;
+    // we also need to set up a new node that gets returned and points to the large node
+    nodePointer toReturn = new nodeObject();
+    setUpIndexNode(toReturn);
+    //cout << "here" << endl;
+    toReturn->numKeys = 1;
+    //cout << "here" << endl;
+    toReturn->keys[0] = largeNode->keys[0]; // the smallest key
+    toReturn->children[0] = largeNode;  // points at the large node as the child
+    toReturn->numKids = 1;
+    setAllChildren(toReturn); // just make sure the large node is pointing back at this as the parent
+    //cout << "here" << endl;
+    return toReturn;
+  }
+
+  void assignChildren(nodePointer getter, nodePointer has, int from, int to)
+  {
+    int j = 0;
+    getter->numKids = 0;
+    for(int i = from, j = 0; i < to; i++)
+    {
+      getter->children[j] = has->children[i]; // set the receiver to be getting the appropriate child
+      getter->numKids++;
+      printNode(getter->children[j]);
+      j++;
+    }
+    printNode(getter);
+    cout << "was assigned " << getter->numKids << " children" << endl;
+  }
+
+    // trains the children to know who their parent is
+  // iterate through all the children (just one level) and make sure their parent pointers point
+  // to the right parent
+  void trainChildren(nodePointer p)
+  {
+    cout << "numkids of node ";
+    printNode(p);
+    cout << " is " ;
+    for(int i = 0; i < p->numKids; i++)
+    {
+      p->children[i]->parent = p; // the child at location i's parent is p
+    }
   }
 
   // returns an index node which has a single child pointer pointing to the largeNode
@@ -421,18 +563,35 @@ class BPTree
     toReturn->children = new nodePointer[maxKids];
     toReturn->keys = new int[maxNodes];
     toReturn->keyValues = new Pair[maxKeys + 1];
+    toReturn->numKids = 0;
+    toReturn->numKeys = 0;
   }
 
   nodePointer setUpLeafNode(int numKeys)
   {
     nodePointer toReturn = new nodeObject();
     toReturn->typeOfNode = LEAF;
-    toReturn->children = new nodePointer[maxKids];
+    toReturn->children = new nodePointer[maxKids+1];
     toReturn->numKeys = numKeys;
     toReturn->keys = new int[maxNodes];
     toReturn->keyValues = new Pair[maxKeys + 1];
     return toReturn;
   }
+
+/*
+  nodePointer setUpIndexNode(int numKeys)
+  {
+    cout << "returning from setUpIndexNode" << endl;
+    nodePointer toReturn = new nodeObject();
+    cout << "returning from setUpIndexNode" << endl;
+    toReturn->typeOfNode = INDEX;
+    toReturn->children = new nodePointer[maxKids+1];
+    toReturn->numKeys = numKeys;
+    toReturn->keys = new int[maxNodes];
+    toReturn->keyValues = new Pair[maxKeys + 1];
+    
+    return toReturn;
+  } */
 
   nodePointer getSmallestNode(Pair kv[], int smallestLargeSpot)
   {
@@ -447,6 +606,47 @@ class BPTree
     return toReturn;
   }
 
+// return the smallest index node
+  nodePointer getSmallestIndexNode(int k[], int smallestLargeSpot)
+  {
+    nodePointer toReturn = new nodeObject(); //setUpIndexNode(smallestLargeSpot); 
+    setUpIndexNode(toReturn);
+    toReturn->numKeys = smallestLargeSpot;
+
+    for(int i = 0; i < smallestLargeSpot; i++)
+    {
+      toReturn->keys[i] = k[i];
+      toReturn->keys[i] = k[i];
+      //cout << toReturn->keys[i] << endl;
+    }
+    return toReturn;
+  }
+
+  
+
+// go through the array of children and sort them according to their smallest keys
+  void selectionSort(nodePointer *arr, int len)
+{
+	nodePointer min = nullptr;	//minimum value
+	int spot = len-1;	//the spot of the minimum value
+	for(int i = 0; i < len; i++)	//holds the spot where the next number would go
+	{
+		spot = i;
+		//std::cout << "i is: " << i << "\n";
+		min = arr[i];
+		for(int j = i; j<len; j++)	//tries to find the next min
+		{
+			if(min->keys[0] > arr[j]->keys[0])	//check that the arr[j] isn't smaller than the current min, otherwise you flip it
+			{
+				spot = j;
+				min = arr[j];
+			}
+		}
+		arr[spot] = arr[i];	//flip the min and the i you were at
+		arr[i] = min;
+	}
+}
+
   nodePointer getLargestNode(Pair kv[], int smallestLargeSpot, int numKeys)
   {
     nodePointer toReturn = setUpLeafNode(numKeys - smallestLargeSpot);    
@@ -457,6 +657,22 @@ class BPTree
       toReturn->keys[i] = kv[i + smallestLargeSpot].key;
       //cout << "\tjust added: " << toReturn->keys[i] << " in pos " << pos << endl;;
       toReturn->keyValues[i] = kv[i + smallestLargeSpot];
+      pos++;
+    }
+    return toReturn;
+  }
+
+    nodePointer getLargestIndexNode(int k[], int smallestLargeSpot, int numKeys)
+  {
+    nodePointer toReturn = new nodeObject();//setUpIndexNode(numKeys - smallestLargeSpot);    
+    setUpIndexNode(toReturn);
+    toReturn->numKeys = numKeys - smallestLargeSpot;
+    int pos = 0;
+    for(int i = 0; i + smallestLargeSpot< numKeys; i++)
+    {
+      toReturn->keys[i] = k[i + smallestLargeSpot];
+      //cout << "\tjust added: " << toReturn->keys[i] << " in pos " << pos << endl;;
+      toReturn->keys[i] = k[i + smallestLargeSpot];
       pos++;
     }
     return toReturn;
@@ -513,10 +729,24 @@ class BPTree
 
   void printBPTree()
   {
+    cout << "root";
     printNode(rootNode);
+    cout << "left child";
     printNode(rootNode->children[0]);
+    cout << "second child" << endl;
     printNode(rootNode->children[1]);
-
+    if(rootNode->numKids >= 3)
+    {
+      cout << "third child";
+      printNode(rootNode->children[2]);
+      
+    }
+    if(rootNode->numKids >= 4)
+    {
+      cout << "fourth illegal child";
+      printNode(rootNode->children[3]);
+      
+    }
   }
 
 };
