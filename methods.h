@@ -5,8 +5,9 @@
 using std::string;
 using namespace std;
 #include <locale>         // std::locale, std::tolower
-#include "bplustree.h"
+//#include "bplustree.h"
 //#include "bpt2.h"
+#include "treeTry3.h"
 
 ///////////////////////////////////////////////////////////////
 // return what the command is
