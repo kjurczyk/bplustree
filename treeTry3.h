@@ -167,7 +167,7 @@ public:
     //}
     
     // run the stepAfter the split(current Leaf, largeLeaf)
-    stepAfterSplit(current, largeLeaf);
+    stepAfterSplit(current, largeLeaf, -999);
   }
 
   // nodePointer determineLeafNode(key)
@@ -221,7 +221,7 @@ public:
     //  if numKey < maxKeys, you are safe and you are done
     //  else if the numKey is now larger than it is supposed to be (aka numKey >= maxKeys)
     //    pass this now-messed-up parent to be fixed by being split
-    void stepAfterSplit(nodePointer original, nodePointer large)
+    void stepAfterSplit(nodePointer original, nodePointer large, int numToBeMerged)
     {
       cout << "STEP-AFTER-SPLIT" << endl;
       printNode("original", original);
@@ -235,7 +235,15 @@ public:
         original->isRoot = false;
         newNode->children[0] = original;
         newNode->children[1] = large;
-        newNode->keys[0] = large->keys[0];
+        if(numToBeMerged != -999)
+        {
+          newNode->keys[newNode->numKeys] = numToBeMerged;
+        }
+        else
+        {
+          newNode->keys[0] = large->keys[0];
+        }
+        
         newNode->numKeys++;
         newNode->numKids = 2;
         root = newNode;
@@ -246,8 +254,15 @@ public:
         newNode = findParent(original);
         newNode->children[newNode->numKids] = large;
         newNode->numKids++;
-        if(canPullFromLarge)
-        newNode->keys[newNode->numKeys] = original->keys[original->numKeys+1];//large->keys[0]; // the smallest key from large
+        if(numToBeMerged != -999)
+        {
+          newNode->keys[newNode->numKeys] = numToBeMerged;
+        }
+        else
+        {
+          newNode->keys[newNode->numKeys] = large->keys[0]; // the smallest key from large
+        }
+        
         newNode->numKeys++;
         sortChildren(newNode->children, newNode->numKids);
         sortKeys(newNode->keys, newNode->numKeys);
@@ -306,8 +321,8 @@ public:
 
     toBeUpdated->numKeys = smallToReceive;
     toBeUpdated->numKids = smallToReceive+1;
-
-    stepAfterSplit(toBeUpdated, largeIndex, );
+    cout << "number being appended is " << toBeUpdated->keys[smallToReceive];
+    stepAfterSplit(toBeUpdated, largeIndex, toBeUpdated->keys[smallToReceive]);
   }
 
 
