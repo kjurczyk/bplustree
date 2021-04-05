@@ -1,77 +1,65 @@
 file_name is e1.txt
 Initialize(3)
-New 3-way tree was initialized
 Insert(21, 0.3534)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 21
-need to insert a new node here: 
-insert here is blank right now
+insert new node here is blank right now
 PRINT-TREE
 root is blank right now
 INITIALIZE-NODE
-just initialized a node as a root node
 after adding the key and sorting: [21 ]
 Insert(108, 31.907)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 108
 seeker: [21 ]
-keys of seeker1
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 ]
+insert new node here: [21 ]
 PRINT-TREE
 root: [21 ]
 after adding the key and sorting: [21 108 ]
 Insert(56089, 3.26)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 56089
 seeker: [21 108 ]
-keys of seeker2
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 108 ]
+insert new node here: [21 108 ]
 PRINT-TREE
 root: [21 108 ]
 after adding the key and sorting: [21 108 56089 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 108
-1
-large leaf keys[1] is 56089
 large: [108 56089 ]
 STEP-AFTER-SPLIT
 original: [21 ]
 largenode: [108 56089 ]
 INITIALIZE-NODE
 new Root created: [108 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 ]
+traveller was found to be: [21 ]
+assigned child at 0 from if
+assigned child at 1 from else if
+DETERMINE-LEAF-NODE
+seeker: [108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 ]
+current seeker: [108 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 ]
+current seeker: [21 ]
+current first: [21 ]
+current last: [108 56089 ]
+Linked list starting at 
+linked list: [21 ]
+linked list: [108 56089 ]
 Insert(234, 121.56)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 234
 seeker: [108 ]
-keys of seeker1
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-Returning the child at 1
-parent has 2 kids
-child : [21 ]
-child : [108 56089 ]
-cchild at 2 is blank right now
 current seeker: [108 56089 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [108 56089 ]
+insert new node here: [108 56089 ]
 PRINT-TREE
 root: [108 ]
 root has 2 kids
@@ -80,15 +68,7 @@ child : [108 56089 ]
 no kids to print
 no kids to print
 after adding the key and sorting: [108 234 56089 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 234
-1
-large leaf keys[1] is 56089
 large: [234 56089 ]
 STEP-AFTER-SPLIT
 original: [108 ]
@@ -96,38 +76,58 @@ largenode: [234 56089 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-Returning the child at 1
-parent has 2 kids
-child : [21 ]
-child : [108 ]
-cchild at 2 is blank right now
 traveller was found to be: [108 ]
-returning seeker
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [108 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 ]
+current seeker: [234 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [108 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [108 ]
+current last: [234 56089 ]
+current last: [108 ]
 newNode from stepAfterSplit: [108 234 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 ]
+traveller was found to be: [108 ]
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [108 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 ]
+current seeker: [234 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [108 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [108 ]
+current last: [234 56089 ]
+current last: [108 ]
+Linked list starting at 
+linked list: [21 ]
+linked list: [108 ]
+linked list: [234 56089 ]
 Insert(4325, -109.23)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 4325
 seeker: [108 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 234 ]
-i: 0
-i: 1
-Returning the child at 2
-parent has 3 kids
-child : [21 ]
-child : [108 ]
-child : [234 56089 ]
-cchild at 2: [234 56089 ]
 current seeker: [234 56089 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [234 56089 ]
+insert new node here: [234 56089 ]
 PRINT-TREE
 root: [108 234 ]
 root has 3 kids
@@ -137,15 +137,7 @@ child : [234 56089 ]
 no kids to print
 no kids to print
 after adding the key and sorting: [234 4325 56089 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 4325
-1
-large leaf keys[1] is 56089
 large: [4325 56089 ]
 STEP-AFTER-SPLIT
 original: [234 ]
@@ -153,85 +145,94 @@ largenode: [4325 56089 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 234 ]
-i: 0
-i: 1
-Returning the child at 2
-parent has 3 kids
-child : [21 ]
-child : [108 ]
-child : [234 ]
-cchild at 2: [234 ]
 traveller was found to be: [234 ]
-returning seeker
-too many keys... now updating parent
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else
+assigned child at 3 from else if
+DETERMINE-LEAF-NODE
+seeker: [108 234 4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [108 234 4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 234 4325 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
 UPDATE-PARENT
 INITIALIZE-NODE
-smallToReceive 1
-largeToReceive 2
 toBeUpdated: [108 234 4325 ]
-i: 0
 largeIndex currently: [4325 ]
 updateParent - largeIndex after for loop: [4325 ]
-number being appended is 234STEP-AFTER-SPLIT
+STEP-AFTER-SPLIT
 original: [108 ]
 largenode: [4325 ]
 INITIALIZE-NODE
 new Root created: [234 ]
-updatedParent looks like this: [108 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+traveller was found to be: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+traveller was found to be: [234 ]
+assigned child at 0 from if
+assigned child at 1 from else if
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [108 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+Linked list starting at 
+linked list: [234 ]
+linked list: [4325 56089 ]
 Delete (108)
 key: 108
 Search(234)
 DETERMINE-LEAF-NODE
-determine leaf node, key: 234
 seeker: [234 ]
-keys of seeker1
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-Returning the child at 1
-parent has 2 kids
-child : [108 ]
-child : [4325 ]
-cchild at 2 is blank right now
 current seeker: [4325 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [4325 ]
-i: 0
-returning the child at 0
 current seeker: [234 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
 121.56
 Insert(102, 39.56)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 102
 seeker: [234 ]
-keys of seeker1
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 current seeker: [108 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-returning the child at 0
 current seeker: [21 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 ]
+insert new node here: [21 ]
 PRINT-TREE
 root: [234 ]
 root has 2 kids
@@ -248,28 +249,14 @@ after adding the key and sorting: [21 102 ]
 Insert(65, -3.95)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 65
 seeker: [234 ]
-keys of seeker1
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 current seeker: [108 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-returning the child at 0
 current seeker: [21 102 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 102 ]
+insert new node here: [21 102 ]
 PRINT-TREE
 root: [234 ]
 root has 2 kids
@@ -283,15 +270,7 @@ child : [234 ]
 child : [4325 56089 ]
 child at 3 is blank right now
 after adding the key and sorting: [21 65 102 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 65
-1
-large leaf keys[1] is 102
 large: [65 102 ]
 STEP-AFTER-SPLIT
 original: [21 ]
@@ -299,17 +278,78 @@ largenode: [65 102 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 traveller was found to be: [108 ]
-need to find a new traveller
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-returning the child at 0
 traveller was found to be: [21 ]
-returning seeker
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [65 108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 108 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [65 102 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [65 102 ]
 newNode from stepAfterSplit: [65 108 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+traveller was found to be: [65 108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 108 ]
+traveller was found to be: [21 ]
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [65 108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 108 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [65 102 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [65 102 ]
+Linked list starting at 
+linked list: [21 ]
+linked list: [65 102 ]
+linked list: [108 ]
+linked list: [234 ]
+linked list: [4325 56089 ]
 Delete (102)
 key: 102
 Delete (21)
@@ -317,29 +357,14 @@ key: 21
 Insert(106, -3.91)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 106
 seeker: [234 ]
-keys of seeker1
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 current seeker: [65 108 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [65 108 ]
-i: 0
-i: 1
-returning the child at 1
 current seeker: [65 102 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [65 102 ]
+insert new node here: [65 102 ]
 PRINT-TREE
 root: [234 ]
 root has 2 kids
@@ -354,15 +379,7 @@ child : [234 ]
 child : [4325 56089 ]
 child at 3 is blank right now
 after adding the key and sorting: [65 102 106 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 102
-1
-large leaf keys[1] is 106
 large: [102 106 ]
 STEP-AFTER-SPLIT
 original: [65 ]
@@ -370,63 +387,106 @@ largenode: [102 106 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 traveller was found to be: [65 108 ]
-need to find a new traveller
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [65 108 ]
-i: 0
-i: 1
-returning the child at 1
 traveller was found to be: [65 ]
-returning seeker
-too many keys... now updating parent
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else
+assigned child at 3 from else if
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+current seeker: [65 102 108 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 102 108 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [65 ]
+current first: [102 106 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [102 106 ]
+current last: [65 ]
 UPDATE-PARENT
 INITIALIZE-NODE
-smallToReceive 1
-largeToReceive 2
 toBeUpdated: [65 102 108 ]
-i: 0
 largeIndex currently: [108 ]
 updateParent - largeIndex after for loop: [108 ]
-number being appended is 102STEP-AFTER-SPLIT
+STEP-AFTER-SPLIT
 original: [65 ]
 largenode: [108 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [234 ]
-i: 0
-returning the child at 0
 traveller was found to be: [65 ]
-returning seeker
 newNode from stepAfterSplit: [102 234 ]
-updatedParent looks like this: [65 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+traveller was found to be: [65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 ]
+traveller was found to be: [65 ]
+assigned child at 0 from if
+assigned child at 1 from else if
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [65 ]
+current first: [102 106 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [102 106 ]
+current last: [65 ]
+Linked list starting at 
+linked list: [21 ]
+linked list: [65 ]
+linked list: [102 106 ]
+linked list: [108 ]
+linked list: [234 ]
+linked list: [4325 56089 ]
 Insert(23, 3.55)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 23
 seeker: [102 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-returning the child at 0
 current seeker: [65 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [65 ]
-i: 0
-returning the child at 0
 current seeker: [21 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 ]
+insert new node here: [21 ]
 PRINT-TREE
 root: [102 234 ]
 root has 3 kids
@@ -444,32 +504,26 @@ child : [234 ]
 child : [4325 56089 ]
 after adding the key and sorting: [21 23 ]
 Search(23, 99)
-key1: 23key2: 99
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [65 ]
+current seeker: [21 23 ]
+3.55, -3.95
 Insert(32, 0.02)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 32
 seeker: [102 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-returning the child at 0
 current seeker: [65 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [65 ]
-i: 0
-returning the child at 0
 current seeker: [21 23 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [21 23 ]
+insert new node here: [21 23 ]
 PRINT-TREE
 root: [102 234 ]
 root has 3 kids
@@ -486,15 +540,7 @@ child at 3 has 2 kids
 child : [234 ]
 child : [4325 56089 ]
 after adding the key and sorting: [21 23 32 ]
-NumKeys > maxKeys
 INITIALIZE-NODE
-maxkids: 3
-smallLeafKeys: 1
-LargeLeafKeys: 2
-0
-large leaf keys[0] is 23
-1
-large leaf keys[1] is 32
 large: [23 32 ]
 STEP-AFTER-SPLIT
 original: [21 ]
@@ -502,47 +548,99 @@ largenode: [23 32 ]
 FIND-PARENT
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-returning the child at 0
 traveller was found to be: [65 ]
-need to find a new traveller
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [65 ]
-i: 0
-returning the child at 0
 traveller was found to be: [21 ]
-returning seeker
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [23 65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [23 65 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [23 32 ]
+current first: [65 ]
+current first: [102 106 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [102 106 ]
+current last: [65 ]
+current last: [23 32 ]
 newNode from stepAfterSplit: [23 65 ]
+FIND-PARENT
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+traveller was found to be: [23 65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [23 65 ]
+traveller was found to be: [21 ]
+assigned child at 0 from if
+assigned child at 1 from else
+assigned child at 2 from else if
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [4325 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+current seeker: [4325 56089 ]
+DETERMINE-LEAF-NODE
+seeker: [102 234 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+current seeker: [23 65 ]
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [23 65 ]
+current seeker: [21 ]
+current first: [21 ]
+current first: [23 32 ]
+current first: [65 ]
+current first: [102 106 ]
+current first: [108 ]
+current first: [234 ]
+current last: [4325 56089 ]
+current last: [234 ]
+current last: [108 ]
+current last: [102 106 ]
+current last: [65 ]
+current last: [23 32 ]
+Linked list starting at 
+linked list: [21 ]
+linked list: [23 32 ]
+linked list: [65 ]
+linked list: [102 106 ]
+linked list: [108 ]
+linked list: [234 ]
+linked list: [4325 56089 ]
 Insert(220, 3.55)
 INSERT
 DETERMINE-LEAF-NODE
-determine leaf node, key: 220
 seeker: [102 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-i: 1
-returning the child at 1
 current seeker: [108 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [108 ]
-i: 0
-Returning the child at 1
-parent has 2 kids
-child : [102 106 ]
-child : [108 ]
-cchild at 2 is blank right now
 current seeker: [108 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
-need to insert a new node here: 
-insert here: [108 ]
+insert new node here: [108 ]
 PRINT-TREE
 root: [102 234 ]
 root has 3 kids
@@ -562,56 +660,23 @@ child : [4325 56089 ]
 after adding the key and sorting: [108 220 ]
 Search(33)
 DETERMINE-LEAF-NODE
-determine leaf node, key: 33
 seeker: [102 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-returning the child at 0
 current seeker: [23 65 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [23 65 ]
-i: 0
-i: 1
-returning the child at 1
 current seeker: [23 32 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
 Null
 Delete (234)
 key: 234
 Search(65)
 DETERMINE-LEAF-NODE
-determine leaf node, key: 65
 seeker: [102 234 ]
-keys of seeker2
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [102 234 ]
-i: 0
-returning the child at 0
 current seeker: [23 65 ]
-seeker->isLeaf 0
-determined which child to travel down
-seeking which child to travel down
 DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
 parent: [23 65 ]
-i: 0
-i: 1
-Returning the child at 2
-parent has 3 kids
-child : [21 ]
-child : [23 32 ]
-child : [65 ]
-cchild at 2: [65 ]
 current seeker: [65 ]
-seeker->isLeaf 1
-determined which child to travel down
-found the leaf node and returning it
 -3.95

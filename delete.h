@@ -1,4 +1,4 @@
-#include "treeTry3.h"
+#include "treeTry4.h"
 
 void deletePair(int key, bool alreadyChecked) // if all nodes were deleted, set hasRoot to false
 {
