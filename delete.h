@@ -54,9 +54,9 @@ void BPTree::deletePair(int key, bool alreadyChecked) // if all nodes were delet
   }
 
   // find the node that needs to be deleted from
-  nodePointer toBeDeletedFrom = determineLeafNode(key);
+  nodePointer sacrificialNode = determineLeafNode(key);
   // delete the key and keyValue pair from the keys array and keyValues array, respectively
-  deleteKeyAndKeyValuePair(toBeDeletedFrom, key);
+  deleteKeyAndKeyValuePair(sacrificialNode, key);
 // if you have alreadyChecked if this is it, you are done now
   if(alreadyChecked)
   {
@@ -66,22 +66,43 @@ void BPTree::deletePair(int key, bool alreadyChecked) // if all nodes were delet
   // a node (other than root node) should contain at least ((maxKeys+1)/2)-1 keys
   //  root node can have 1 key
   // if the node is still legal (numKeys >= minimumKeys), you are done
-  // else, borrow from the nearest sibling
+  if(sacrificialNode->numKeys >= minKeys)
+  {
+    return;
+  }
+  else  // else, borrow from the nearest sibling
+  {
   //    determineChildNum
+  //int childNum = determineChildNum();
   // if you have your choice of sibling, pull from the bigger one 
   //    (check if sibling would be legal if something were removed - if not don't do this)
   //    if you pull from the bigger sibling, the parent key of that sibling needs to be updated
-  //    with the now-smallest value in that sibling. The key at i-1 is the one that changes (since it definitely wasn't the smaller one)
-  // else if have to pull from the smaller one
-  //    check if the smaller one is legal if we removed a keyValue-pair - otherwise don't do this
-  //    if you can pull without problem, no work necessary, just insert the keyValue pair into this node
-  // now you are done if you did one of these things
-
-  // now comes the interesting bit. What happens if you have no legal sibling to pull from?
-  // check once again if you have a larger sibling. If you do, just delete this node, no questions asked
+  // can I pull from the bigger sibling
+    if(sacrificialNode->nextLeaf != nullptr && sacrificialNode->nextLeaf->numKeys > minKeys)  // check if there is a nextLeaf and if you could steal from it
+    {
+      insertAsReplacement(sacrificialNode, findParent(sacrificialNode), sacrificialNode->nextLeaf, true);//, -1)
+    }
+    else if(sacrificialNode->prevLeaf != nullptr && sacrificialNode->prevLeaf->numKeys > minKeys) // if this is true, you could pull from here
+    {
+      insertAsReplacement(sacrificialNode, findParent(sacrificialNode), sacrificialNode->prevLeaf, true);
+      //    with the now-smallest value in that sibling. The key at i-1 is the one that changes (since it definitely wasn't the smaller one)
+      // else if have to pull from the smaller one
+      //    check if the smaller one is legal if we removed a keyValue-pair - otherwise don't do this
+      //    if you can pull without problem, no work necessary, just insert the keyValue pair into this node
+      // now you are done if you did one of these things
+    }
+  
+  
+    // check once again if you have a larger sibling. 
+    else if(sacrificialNode->nextLeaf != nullptr) // you have no legal sibling to pull from, pull from the larger sibling if it exists
+    {
+      deleteLeafNode(sacrificialNode);  //If you do, just delete this node, no questions asked
   //  we will call it "merging" with the sibling node
   //  there is some cleanup work with this, namely, delete the parent->keys[i] (I think?)
   //  also remove the childNum from the parent->children array
+    }
+  // now comes the interesting bit. What happens if you have no legal sibling to pull from?
+
   // if instead you are pulling from an illegal smaller sibling (you have no larger sibling)
   //  "merge" with the smaller sibling by deleting your node (parent->keys[i-1]) (I think)
   //  remove the childNum from the parent->children array
@@ -102,7 +123,31 @@ void BPTree::deletePair(int key, bool alreadyChecked) // if all nodes were delet
   // insert the stolenNode as a child 
 
   // if you have no sibling to pull from, you must be the root and you are done
-  
+  }
+}
+
+// delete the node from the tree by making the parent forget it exists
+// recalculate the parent's keys array
+// also remove this node from the linked list
+// and check if the parent is still legal
+void BPTree::deleteLeafNode(nodePointer node)
+{
+  nodePointer parent = findParent(node);
+  bool found = false;
+  for(int i = 0; i < parent->numKids-1; i++)
+  {
+    if(parent->children[i] == node)
+    {
+      found = true;
+    }
+    if(found)
+    {
+      parent->children[i] = parent->children[i+1];
+    }
+  }
+  // we've also removed a key from the parent, so subtract 1
+  parent->numKids--;
+  recalculateParentKeys(parent);
 }
 
 // insertNewNodeAtLocation(Pair pair, nodePointer parent, sibling, isBigger, -1)
@@ -140,6 +185,89 @@ void BPTree::deletePair(int key, bool alreadyChecked) // if all nodes were delet
 //    if(childNumOfSibling != -1)
 //    update the parent so that the key at childNumOfSibling-1 = bigger sibling's now smallest number
 //    subtract 1 from numkeys
+void BPTree::insertAsReplacement(nodePointer node, nodePointer parent, nodePointer sibling, bool isBigger)//, int childNumOfSibling)
+{
+  //  if you are here, you know it's legal to pull from sibling and place it into the node
+  //  get the smallest keyValue and key from sibling (if the sibling is bigger) and place into
+  //  node at numKeys location (we've already deleted the old one and updated numKeys at this point)
+  if(isBigger)  // if the sibling is bigger than this node
+  {
+    node->keys[node->numKeys] = sibling->keys[0];
+    node->keyValues[node->numKeys] = sibling->keyValues[0];
+    node->numKeys++;
+
+    // recalculate the keys of the parent
+    recalculateParentKeys(parent);
+
+    //    delete the smallest key and keyValue pair from the sibling & subtract 1 from numkeys
+    deleteKeyAndKeyValuePair(sibling, sibling->keys[0]);
+    //    if(childNumOfSibling != -1)
+    //if(childNumOfSibling != -1)
+    //{
+      //    update the parent so that the key at childNumOfSibling-1 = bigger sibling's now smallest number
+      //updateLargerLender(findParent(sibling), childNumOfSibling);
+      recalculateParentKeys(findParent(sibling));
+    //}
+    
+  }
+  
+  else if(!isBigger) // if you are borrowing from a smaller sibling, if !isBigger sibling (aka it's the smaller sibling)
+  {
+    node->keys[node->numKeys] = sibling->keys[sibling->numKeys-1];
+    node->keyValues[node->numKeys] = sibling->keyValues[sibling->numKeys-1];
+    node->numKeys++;//  increase nummKeys by 1
+    // sort these because you are placing a smaller number at the end
+    sortKeys(node->keys, node->numKeys);//  sort keys and keyValues with numKeys
+    sortKeyValues(node->keyValues, node->numKeys);
+
+    // recalculate the keys of the parent
+    recalculateParentKeys(parent);
+    
+    // delete the largest key and keyValue pair from the sibling using numKeys-1 location & subtract 1 from numkeys
+    node->numKeys--;  // can just do this and we will next time overwrite this number
+    //updateSmallerLender(findParent(sibling), childNumOfSibling);
+    recalculateParentKeys(findParent(sibling));
+  }
+}
+
+void BPTree::recalculateParentKeys(nodePointer parent)
+{
+  // iterate through your keys and replace the key at i+1
+  for(int i = 0; i < parent->numKeys; i++)
+  {
+    parent->keys[i] = parent->children[i+1]->keys[0];
+  }
+}
+
+/*
+// update the parent so that the key at childNumOfSibling-1 = bigger sibling's now smallest number
+void BPTree::updateLargerLender(nodePointer parent, int childNumOfSibling)
+{
+  // if the childNumOfSibling was 0, we don't care about the key anyways, so we can just return
+  if(childNumOfSibling == 0)
+  {
+    return;
+  }
+  else
+  {
+    parent->keys[childNumOfSibling-1] = parent->children[childNumOfSibling]->keys[0];
+  }
+}
+
+// delete the largest key and keyValue pair from the sibling using numKeys-1 location & subtract 1 from numkeys
+void BPTree::updateSmallerLender(nodePointer parent, int childNumOfSibling)
+{
+  // if the childNumOfSibling was 0, we don't care about the key, so we can just return
+  if(childNumOfSibling == 0)
+  {
+    return;
+  }
+  else
+  {
+    parent->keys[childNumOfSibling-1] = parent->children[childNumOfSibling]->keys[0];
+  }
+}
+*/
 
 // returns true if it was able to delete, false if it was unable to delete - should never be false for this assignment
 // bool deleteKeyAndKeyValue(node, key)
@@ -235,3 +363,14 @@ bool BPTree::deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKey
 //  for(int i = 0; i < parent->numKeys; i++)
 //    if the parent->children[i] = the child, you have found
 //      the correct number - return i
+int BPTree::determineChildNum(nodePointer parent, nodePointer child)
+{
+  for(int i = 0; i < parent->numKeys; i++)
+  {
+    if(parent->children[i] == child)
+    {
+      return i;
+    }
+  }
+  return -1;  // if the child was not found, return -1
+}

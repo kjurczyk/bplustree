@@ -78,6 +78,12 @@ public:
   bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);
   bool deleteKey(nodePointer toBeDeletedFrom, int key);
   bool deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues);
+  int determineChildNum(nodePointer parent, nodePointer child);
+  void insertAsReplacement(nodePointer issue, nodePointer parentOfIssue, nodePointer sibling, bool isBigger);//, int childNumOfSibling);
+  void updateLargerLender(nodePointer parent, int childNumOfSibling);
+  void updateSmallerLender(nodePointer parent, int childNumOfSibling);
+  void recalculateParentKeys(nodePointer parent);
+  void deleteLeafNode(nodePointer node);
 
   // methods
   void initialize(int m)
