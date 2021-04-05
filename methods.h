@@ -111,7 +111,7 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
   }
   else if(instructions[0].find("Delete") != std::string::npos) // delete a key
   {
-    bpt.deletePair(std::stoi(instructions[1]));
+    //bpt.deletePair(std::stoi(instructions[1]), false);
   }
   else//(instructions[0].find("Search") != std::string::npos)  // the only other option is that this is a search. It returns the value associated with the key
   {
@@ -125,7 +125,9 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
       bpt.search(std::stoi(instructions[1]), std::stof(instructions[2]));
     }
   }
-   
+   // after every command, print the tree
+   bpt.printTree();
+   bpt.printLinkedList(0);
 }
 
 // // returns the value associated with the key
@@ -142,11 +144,11 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
 //   std::cout << "key: " << key << endl;
 // }
 
-void BPTree::deletePair(int key)
-{
+// void BPTree::deletePair(int key)
+// {
   
-  std::cout << "key: " << key << endl;
-}
+//   std::cout << "key: " << key << endl;
+// }
 
 // void BPTree::insert(int key, float value)
 // {

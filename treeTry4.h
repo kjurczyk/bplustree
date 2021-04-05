@@ -72,9 +72,12 @@ private:
   //bool hasRoot = false; // true if a root exists already, false if not
 
 public:
-  void deletePair(int key); // if all nodes were deleted, set hasRoot to false
+  void deletePair(int key, bool alreadyChecked); // if all nodes were deleted, set hasRoot to false
   void search(int key);
   void search(int key, int key2);
+  bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);
+  bool deleteKey(nodePointer toBeDeletedFrom, int key);
+  bool deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues);
 
   // methods
   void initialize(int m)
@@ -93,17 +96,17 @@ public:
   // insert a key-value pair into a leaf node
   void insert(int key, float value)
   {
-    cout << "INSERT" << endl;
+    if(DEBUG)cout << "INSERT" << endl;
     // create a new nodePointer and 
     // determine the leaf node into which the key-value pair should be inserted(key)
     nodePointer current = determineLeafNode(key);
     if(DEBUG)cout << "need to insert a new node here: " << endl;
-    printNode("insert new node here", current);
+    if(DEBUG)printNode("insert new node here", current);
     // if the nodePointer is currently nullptr, there is no root yet, so make one
     //  initialize new node
     //  newNode is a leaf and a root
     //  root = newNode
-    printTree();
+    //printTree();
     if(current == nullptr)
     {
       //cout << "hi" << endl;
@@ -126,7 +129,7 @@ public:
     sortKeyValues(current->keyValues, current->numKeys);
     sortKeys(current->keys, current->numKeys);
 
-    printNode("after adding the key and sorting", current);
+    if(DEBUG)printNode("after adding the key and sorting", current);
 
     // if what you did was legal (numKeys < maxKeys), you are done
     if(current->numKeys <= maxKeys) 
@@ -163,7 +166,7 @@ public:
         largeLeaf->numKeys++;
         
       }
-      printNode("large", largeLeaf);
+      if(DEBUG)printNode("large", largeLeaf);
       current->numKeys = smallLeafKeys;
     //}
     
@@ -180,7 +183,7 @@ public:
     // after you've gone through the entire sibling array of this parent, just check if more siblings popped up somewhere
     // start at the leftmost leaf and work your way right
     checkAllSiblings(determineLeafNode(0), determineLeafNode(99999)); // may be extraneous for some locations, but is necessary for edge cases
-    printLinkedListGivenPointer(parent->children[0]);
+    if(DEBUG)printLinkedListGivenPointer(parent->children[0]);
   }
 
   // checks all the sibling pointers, starting at the smallest node
@@ -188,7 +191,7 @@ public:
   {
     while(first->nextLeaf != nullptr)
     {
-      printNode("current first", first);
+      if(DEBUG)printNode("current first", first);
       if(first->nextLeaf->prevLeaf != first)
       {
         first->nextLeaf = first->nextLeaf->prevLeaf;
@@ -198,7 +201,7 @@ public:
     }
     while(last->prevLeaf != nullptr)
     {
-      printNode("current last", last);
+      if(DEBUG)printNode("current last", last);
       if(last->prevLeaf->nextLeaf != last)
       {
         // if they are not the same
@@ -229,7 +232,7 @@ public:
     {
       if(i == 0)  // if it's the first child
       {
-        cout << "assigned child at " << i << " from if" << endl;
+        if(DEBUG)cout << "assigned child at " << i << " from if" << endl;
         parent->children[i]->nextLeaf = parent->children[i+1];
         if(parent->children[i]->prevLeaf != nullptr)
         {
@@ -242,7 +245,7 @@ public:
 
       else if(i == parent->numKids-1)  // if it's the last child
       {
-        cout << "assigned child at " << i << " from else if" << endl;
+        if(DEBUG)cout << "assigned child at " << i << " from else if" << endl;
         parent->children[i]->prevLeaf = parent->children[i-1];
         if(parent->children[i]->nextLeaf != nullptr)
         {
@@ -255,7 +258,7 @@ public:
 
       else
       {
-        cout << "assigned child at " << i << " from else" << endl;
+        if(DEBUG)cout << "assigned child at " << i << " from else" << endl;
         parent->children[i]->nextLeaf = parent->children[i+1];
         parent->children[i]->prevLeaf = parent->children[i-1];
       }
@@ -284,7 +287,7 @@ public:
   //  return the seeker because you know it is a root because it came out of the while loop
   nodePointer determineLeafNode(int key)
   {
-    cout << "DETERMINE-LEAF-NODE" << endl;
+    if(DEBUG)cout << "DETERMINE-LEAF-NODE" << endl;
     if(DEBUG) cout << "determine leaf node, key: " << key << endl;
     if(root == nullptr) 
     {
@@ -293,13 +296,13 @@ public:
     else
     {
       nodePointer seeker = root;
-      printNode("seeker", seeker);
+      if(DEBUG)printNode("seeker", seeker);
       if(DEBUG)cout << "keys of seeker" << seeker->numKeys << endl;
       while(seeker->isLeaf == false)
       {
         if(DEBUG)cout << "seeking which child to travel down" << endl;
         seeker = determineWhichChildToTravelDown(seeker, key);
-        printNode("current seeker", seeker);
+        if(DEBUG)printNode("current seeker", seeker);
         if(DEBUG)cout << "seeker->isLeaf " << seeker->isLeaf << endl;
         if(DEBUG)cout << "determined which child to travel down" << endl;
       }
@@ -327,9 +330,9 @@ public:
     //    pass this now-messed-up parent to be fixed by being split
     void stepAfterSplit(nodePointer original, nodePointer large, int numToBeMerged)
     {
-      cout << "STEP-AFTER-SPLIT" << endl;
-      printNode("original", original);
-      printNode("largenode", large);
+      if(DEBUG)cout << "STEP-AFTER-SPLIT" << endl;
+      if(DEBUG)printNode("original", original);
+      if(DEBUG)printNode("largenode", large);
       nodePointer newNode;
       if(original->isRoot == true)
       {
@@ -351,7 +354,7 @@ public:
         newNode->numKeys++;
         newNode->numKids = 2;
         root = newNode;
-        printNode("new Root created", root);
+        if(DEBUG)printNode("new Root created", root);
       }
       else  // this was definitely an index node but not a root
       {
@@ -383,7 +386,7 @@ public:
 
         if(newNode->numKeys <= maxKeys)  // you are almost done
         {
-          printNode("newNode from stepAfterSplit", newNode);
+          if(DEBUG)printNode("newNode from stepAfterSplit", newNode);
           return;
         }
           
@@ -411,7 +414,7 @@ public:
   // now that you have split the node correctly, run the stepAfterSplit(small/original node, large node)
   void updateParent(nodePointer toBeUpdated)
   {
-    cout << "UPDATE-PARENT" << endl;
+    if(DEBUG)cout << "UPDATE-PARENT" << endl;
     nodePointer largeIndex = initializeNode();
     largeIndex->isLeaf = false;
     largeIndex->isRoot = false;
@@ -420,7 +423,7 @@ public:
     int largeToReceive = maxKeys+1 - smallToReceive;  // made this 1 smaller
     if(DEBUG)cout << "largeToReceive " << largeToReceive << endl;
     int i = 0;
-    printNode("toBeUpdated", toBeUpdated);
+    if(DEBUG)printNode("toBeUpdated", toBeUpdated);
     for(i = 0; i <largeToReceive-1; i++)  // changed from 0 to 1 to not keep the largest number
     {
       largeIndex->keys[i] = toBeUpdated->keys[i+smallToReceive+1];  // added a 1 here
@@ -428,11 +431,11 @@ public:
       largeIndex->children[i] = toBeUpdated->children[i+smallToReceive+1];  // added a 1 here
       largeIndex->numKids++;
       if(DEBUG)cout << "i: " << i << endl;
-      printNode("largeIndex currently", largeIndex);
+      if(DEBUG)printNode("largeIndex currently", largeIndex);
     }
     largeIndex->children[i] = toBeUpdated->children[i+smallToReceive+1];  // one more time to get all the kids
     largeIndex->numKids++;
-    printNode("updateParent - largeIndex after for loop", largeIndex);
+    if(DEBUG)printNode("updateParent - largeIndex after for loop", largeIndex);
 
     toBeUpdated->numKeys = smallToReceive;
     toBeUpdated->numKids = smallToReceive+1;
@@ -450,7 +453,7 @@ public:
   // isLeaf and isRoot, as well as sibling pointers will be set elsewhere
   nodePointer initializeNode()
   {
-    cout << "INITIALIZE-NODE" << endl;
+    if(DEBUG)cout << "INITIALIZE-NODE" << endl;
     nodePointer node = new nodeObject();
     node->numKeys = 0;
     node->keys = new int[maxKeys+1];
@@ -472,7 +475,7 @@ public:
   // if you dropped out of the while loop, there is a problem. Node (and corresponding parent) not found.
   nodePointer findParent(nodePointer child)
   {
-    cout << "FIND-PARENT" << endl;
+    if(DEBUG)cout << "FIND-PARENT" << endl;
     nodePointer seeker = root;
     nodePointer traveller = seeker;
     
@@ -480,7 +483,7 @@ public:
     {
       traveller = determineWhichChildToTravelDown(seeker, child->keys[0]);
       
-      printNode("traveller was found to be", traveller);
+      if(DEBUG)printNode("traveller was found to be", traveller);
       //printNode("child being looked for", child);
       if(traveller == child) 
       {
@@ -509,9 +512,9 @@ public:
   //  we should always have returned before this, but just in case, return nullptr to indicate there was no child
   nodePointer determineWhichChildToTravelDown(nodePointer parent, int keyBeingSearchedFor)
   {
-    cout << "DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN" << endl;
+    if(DEBUG)cout << "DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN" << endl;
     int i = 0;
-    printNode("parent", parent);
+    if(DEBUG)printNode("parent", parent);
     for(i = 0; i < parent->numKeys; i++)
     {
       if(DEBUG)cout << "i: " << i << endl;
@@ -680,7 +683,10 @@ public:
   // print linked list starting with key1
   void printLinkedList(int key1)
   {
-    
+    if(root == nullptr)
+    {
+      return;
+    }
     nodePointer current = determineLeafNode(key1);
     cout << "Linked list starting at " << key1 << endl;
     printNode("linked list",current);
