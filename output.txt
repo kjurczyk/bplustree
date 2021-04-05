@@ -181,7 +181,32 @@ updatedParent looks like this: [108 ]
 Delete (108)
 key: 108
 Search(234)
-key: 234
+DETERMINE-LEAF-NODE
+determine leaf node, key: 234
+seeker: [234 ]
+keys of seeker1
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [234 ]
+i: 0
+Returning the child at 1
+parent has 2 kids
+child : [108 ]
+child : [4325 ]
+cchild at 2 is blank right now
+current seeker: [4325 ]
+seeker->isLeaf 0
+determined which child to travel down
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [4325 ]
+i: 0
+returning the child at 0
+current seeker: [234 ]
+seeker->isLeaf 1
+determined which child to travel down
+found the leaf node and returning it
+121.56
 Insert(102, 39.56)
 INSERT
 DETERMINE-LEAF-NODE
@@ -536,6 +561,57 @@ child : [234 ]
 child : [4325 56089 ]
 after adding the key and sorting: [108 220 ]
 Search(33)
-key: 33
+DETERMINE-LEAF-NODE
+determine leaf node, key: 33
+seeker: [102 234 ]
+keys of seeker2
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+i: 0
+returning the child at 0
+current seeker: [23 65 ]
+seeker->isLeaf 0
+determined which child to travel down
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [23 65 ]
+i: 0
+i: 1
+returning the child at 1
+current seeker: [23 32 ]
+seeker->isLeaf 1
+determined which child to travel down
+found the leaf node and returning it
+Null
 Delete (234)
 key: 234
+Search(65)
+DETERMINE-LEAF-NODE
+determine leaf node, key: 65
+seeker: [102 234 ]
+keys of seeker2
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [102 234 ]
+i: 0
+returning the child at 0
+current seeker: [23 65 ]
+seeker->isLeaf 0
+determined which child to travel down
+seeking which child to travel down
+DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN
+parent: [23 65 ]
+i: 0
+i: 1
+Returning the child at 2
+parent has 3 kids
+child : [21 ]
+child : [23 32 ]
+child : [65 ]
+cchild at 2: [65 ]
+current seeker: [65 ]
+seeker->isLeaf 1
+determined which child to travel down
+found the leaf node and returning it
+-3.95

@@ -7,7 +7,9 @@ using namespace std;
 #include <locale>         // std::locale, std::tolower
 //#include "bplustree.h"
 //#include "bpt2.h"
-#include "treeTry3.h"
+//#include "treeTry3.h"
+//#include "delete.h"
+#include "search.h"
 
 ///////////////////////////////////////////////////////////////
 // return what the command is
@@ -126,19 +128,19 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
    
 }
 
-// returns the value associated with the key
-void BPTree::search(int key, int key2)
-{
+// // returns the value associated with the key
+// void BPTree::search(int key, int key2)
+// {
   
-  std::cout << "key1: " << key << "key2: " << key2 << endl;
-}
+//   std::cout << "key1: " << key << "key2: " << key2 << endl;
+// }
 
 // returns the value associated with the key
-void BPTree::search(int key)
-{
+// void BPTree::search(int key)
+// {
   
-  std::cout << "key: " << key << endl;
-}
+//   std::cout << "key: " << key << endl;
+// }
 
 void BPTree::deletePair(int key)
 {
