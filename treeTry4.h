@@ -72,7 +72,7 @@ private:
   //bool hasRoot = false; // true if a root exists already, false if not
 
 public:
-  void deletePair(int key, bool alreadyChecked); // if all nodes were deleted, set hasRoot to false
+  void deletePair(int key);//, bool alreadyChecked); // if all nodes were deleted, set hasRoot to false
   void search(int key);
   void search(int key, int key2);
   bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);
@@ -83,7 +83,11 @@ public:
   void updateLargerLender(nodePointer parent, int childNumOfSibling);
   void updateSmallerLender(nodePointer parent, int childNumOfSibling);
   void recalculateParentKeys(nodePointer parent);
-  void deleteLeafNode(nodePointer node);
+  void deleteLeafNode(nodePointer node, nodePointer parent);
+  nodePointer getLegalIndexSibling(nodePointer index);
+  void insertParentKeysIntoIndexNode(nodePointer parent, nodePointer receivingNode);
+  void insertChildrenIntoIndexNode(nodePointer node, nodePointer receiver);
+  void percolateUpwards(nodePointer parent);
 
   // methods
   void initialize(int m)
@@ -94,6 +98,10 @@ public:
     minKids = ceil(maxKids / 2);
     // there can be between ceil(m/2)-1 keys and m-1 keys unless you are the root, then your minKeys = 2
     minKeys = ceil(maxKids / 2) - 1;
+    if(minKeys == 0)
+    {
+      minKeys++;
+    }
     maxKeys = maxKids - 1;
     root = nullptr;
     if(DEBUG)cout << "New " << maxKids << "-way tree was initialized" << endl;

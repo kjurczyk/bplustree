@@ -111,7 +111,7 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
   }
   else if(instructions[0].find("Delete") != std::string::npos) // delete a key
   {
-    bpt.deletePair(std::stoi(instructions[1]), false);
+    bpt.deletePair(std::stoi(instructions[1]));//, false);
   }
   else//(instructions[0].find("Search") != std::string::npos)  // the only other option is that this is a search. It returns the value associated with the key
   {
