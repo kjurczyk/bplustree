@@ -88,12 +88,14 @@ public:
   void updateLargerLender(nodePointer parent, int childNumOfSibling);
   void updateSmallerLender(nodePointer parent, int childNumOfSibling);
   void recalculateParentKeys(nodePointer parent);
-  void deleteLeafNode(nodePointer node, nodePointer parent);
+  void deleteNode(nodePointer node, nodePointer parent);
   nodePointer getLegalIndexSibling(nodePointer index);
   void insertParentKeysIntoIndexNode(nodePointer parent, nodePointer receivingNode);
   void insertChildrenIntoIndexNode(nodePointer node, nodePointer receiver);
   void percolateUpwards(nodePointer parent);
   nodePointer sharedElder(nodePointer a, nodePointer b);
+  void mergeWithSibling(nodePointer node, nodePointer parent, nodePointer sibling, nodePointer parentOfSibling);
+  void updateGrandparent(nodePointer node);
 
   // methods
   void initialize(int m)
@@ -563,15 +565,17 @@ public:
   // go through the array of children and sort them according to their smallest keys
   void sortChildren(nodePointer *arr, int len)
   {
+    cout << "sorting children" << endl;
     nodePointer min = nullptr;    //minimum value
     int spot = len - 1;           //the spot of the minimum value
     for (int i = 0; i < len; i++) //holds the spot where the next number would go
     {
       spot = i;
-      //std::cout << "i is: " << i << "\n";
+      std::cout << "i is: " << i << endl;
       min = arr[i];
       for (int j = i; j < len; j++) //tries to find the next min
       {
+        cout << "j is: " << j << endl;
         if (min->keys[0] > arr[j]->keys[0]) //check that the arr[j] isn't smaller than the current min, otherwise you flip it
         {
           spot = j;

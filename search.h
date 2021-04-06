@@ -1,4 +1,4 @@
-#include "delete.h"
+#include "delete2.h"
 
 // returns the value at the key location
 void BPTree::search(int key)
