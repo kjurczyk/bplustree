@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <ostream>
 #include <string>
 #include <vector>
 using std::string;
@@ -95,8 +96,9 @@ string getSecondNum(string s)
 // numbers from the array it was given from the main function
 // returns the new tree
 ////////////////////////////////////////////////////////////
-void doStuffWithCommand(string instructions[3], BPTree &bpt)
+std::string doStuffWithCommand(string instructions[3], BPTree &bpt)
 {
+  string toReturn = "";
   //std::cout << instructions[0] + " has been called" << endl;
   if(instructions[0].find("Initialize") != std::string::npos) // we assume that initialize is always spelled like this
   {
@@ -118,17 +120,18 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
     // send it to the appropriate search function
     if(instructions[2] == "na") // if there is only one value, just send the first
     {
-      bpt.search(std::stoi(instructions[1]));
+      return bpt.search(std::stoi(instructions[1]));
     }
     else
     {
-      bpt.search(std::stoi(instructions[1]), std::stof(instructions[2]));
+      return bpt.search(std::stoi(instructions[1]), std::stof(instructions[2]));
     }
   }
    // after every command, print the tree
-   bpt.printTree();
+   if(DEBUG) bpt.printTree();
    //bpt.printLinkedList(0);
-   bpt.printLinkedListPairs(0);
+   if(DEBUG) bpt.printLinkedListPairs(0);
+   return toReturn;
 }
 
 // // returns the value associated with the key
@@ -204,7 +207,7 @@ vector<string> readFile(string name)
 		while(getline(file, lineOfInput))
     {
       toReturn.push_back(lineOfInput);  // append line to the vector
-      std::cout << lineOfInput << endl; // print line out for debugging
+      if(DEBUG) std::cout << lineOfInput << endl; // print line out for debugging
 
       
     }

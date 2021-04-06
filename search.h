@@ -1,8 +1,13 @@
 #include "delete2.h"
+#include <sstream>
+
+
 
 // returns the value at the key location
-void BPTree::search(int key)
+std::string BPTree::search(int key)
 {
+  std::ostringstream ss;
+  //string toReturn = "";
   nodePointer current = determineLeafNode(key);
   // we've found the leaf node at which the key should be located
   for(int i = 0; i < current->numKeys; i++)
@@ -10,12 +15,23 @@ void BPTree::search(int key)
     // if there is a key, return the value and print it out
     if(current->keyValues[i].key == key)
     {
-      cout << current->keyValues[i].value << endl;
-      return;
+      //toReturn.append(to_string(current->keyValues[i].value));
+      if(DEBUG) cout << current->keyValues[i].value << endl;
+      ss << current->keyValues[i].value;
+      i = current->numKeys;
+      //return;
     }
   }
   // if we reach this location, there is no key, print out "Null"
-  cout << "Null" << endl;
+  if(DEBUG) cout << "Null" << endl;
+  if(ss.str() == "")
+  {
+    ss << "Null";
+    //toReturn.append("Null");
+  }
+  ss << "\n";
+  //toReturn.append("\n");
+  return ss.str();
 }
 
   // bool startingOff = true
@@ -30,8 +46,10 @@ void BPTree::search(int key)
   //   if you've dropped out of the while loop, you are at the end of a node
   //   make the starting leaf = startingLeaf->nextLeaf;
 // returns/prints the range of values from key1 to key2
-void BPTree::search(int key1, int key2)
+std::string BPTree::search(int key1, int key2)
 {
+  std::ostringstream ss;
+  //string toReturn = "";
   // bool startingOff = true
   bool startingOff = true;
   // bool stayIn = true;
@@ -58,12 +76,18 @@ void BPTree::search(int key1, int key2)
         if(DEBUG)cout << "key at " << i << ": " << current->keyValues[i].key << ", value: " << current->keyValues[i].value << ",  ";
         if(startingOff) // if it's the first number you're printing, don't print a comma in front of it
         {
-          cout << current->keyValues[i].value;
+          if(DEBUG) cout << current->keyValues[i].value;
+          //toReturn.append(to_string(current->keyValues[i].value));
+          ss << current->keyValues[i].value;
           startingOff = false;
         }
         else
         {
-          cout << ", " << current->keyValues[i].value;  // print a comma before any numbers coming next
+          //toReturn.append(", ");
+          ss << ", ";
+          //toReturn.append(to_string(current->keyValues[i].value));
+          ss << current->keyValues[i].value;
+          if(DEBUG) cout << ", " << current->keyValues[i].value;  // print a comma before any numbers coming next
         }
         
       }
@@ -91,5 +115,8 @@ void BPTree::search(int key1, int key2)
   //   current = current->nextLeaf;
   // }
   // print a new line at the end of the search to start the next thing off on a new line
-  cout << endl;
+  if(DEBUG) cout << endl;
+  ss << "\n";
+  //toReturn.append("\n");
+  return ss.str(); //toReturn;
 }

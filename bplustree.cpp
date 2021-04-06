@@ -1,5 +1,6 @@
 //#include "bplustree.h"
 #include "methods.h"
+#include <bits/stdc++.h>
 
 
 ////////////////////////////////////////////////
@@ -38,10 +39,11 @@ int main(int argc, char ** argv)
     std::cin >> file_name;
   }
 
-  std::cout << "file_name is " + file_name << endl;
+  if(DEBUG) std::cout << "file_name is " + file_name << endl;
 
   
   std::ifstream file;
+  std::ofstream outputFile;
   string lineOfInput = "";
 
   /*
@@ -71,26 +73,30 @@ int main(int argc, char ** argv)
 
   // open the file
   file.open(file_name.c_str());
+  outputFile.open("output_file.txt");
 
   // check if the file actually opened correctly
-  if (file.is_open())
+  if (file.is_open() && outputFile.is_open())
 	{
     // getline reads one line of the file and puts it in the lineOfInput string
 		while(getline(file, lineOfInput))
     {
       //toReturn.push_back(lineOfInput);  // append line to the vector
-      std::cout << lineOfInput << endl; // print line out for debugging
+      if(DEBUG) std::cout << lineOfInput << endl; // print line out for debugging
       command[0] = getCommand(lineOfInput);
       command[1] = getFirstNum(lineOfInput);
       command[2] = getSecondNum(lineOfInput);
       //std::cout << command[2] << endl;
       // now that we've successfully gotten the numbers and the command, it
       // is time to enter everything into the tree
-      doStuffWithCommand(command, *bpt);
+      //outputFile << "test" << endl;
+      
+      outputFile << doStuffWithCommand(command, *bpt);
       //cout << "the tree now looks like " << endl;
       //bpt->printBPTree();
     }
       // close the file
+      outputFile.close();
       file.close();
       // print the bplus tree
       //cout << "root node is" + bpt->rootNode->info << endl;

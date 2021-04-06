@@ -78,8 +78,8 @@ private:
 
 public:
   void deletePair(int key);//, bool alreadyChecked); // if all nodes were deleted, set hasRoot to false
-  void search(int key);
-  void search(int key, int key2);
+  std::string search(int key);
+  std::string search(int key, int key2);
   bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);
   bool deleteKey(nodePointer toBeDeletedFrom, int key);
   bool deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues);
@@ -504,10 +504,10 @@ public:
     
     while(seeker->isLeaf == false)
     {
-      printNode("current seeker", seeker);
+      if(DEBUG) printNode("current seeker", seeker);
       traveller = determineWhichChildToTravelDown(seeker, child->keys[0]);
       
-      printNode("traveller was found to be", traveller);
+      if(DEBUG) printNode("traveller was found to be", traveller);
       //printNode("child being looked for", child);
       if(traveller == child) 
       {
@@ -566,17 +566,17 @@ public:
   // go through the array of children and sort them according to their smallest keys
   void sortChildren(nodePointer *arr, int len)
   {
-    cout << "sorting children" << endl;
+    if(DEBUG) cout << "sorting children" << endl;
     nodePointer min = nullptr;    //minimum value
     int spot = len - 1;           //the spot of the minimum value
     for (int i = 0; i < len; i++) //holds the spot where the next number would go
     {
       spot = i;
-      std::cout << "i is: " << i << endl;
+      if(DEBUG) cout << "i is: " << i << endl;
       min = arr[i];
       for (int j = i; j < len; j++) //tries to find the next min
       {
-        cout << "j is: " << j << endl;
+        if(DEBUG) cout << "j is: " << j << endl;
         if (min->keys[0] > arr[j]->keys[0]) //check that the arr[j] isn't smaller than the current min, otherwise you flip it
         {
           spot = j;
