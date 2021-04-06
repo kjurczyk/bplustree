@@ -28,6 +28,11 @@ class Pair
     key = 0;
     value = 0;
   }
+
+  void printPair()
+  {
+    cout << key << "(" << value << ")";
+  }
 };
 
 ////////////////////////////////////////////////////////////////////
@@ -88,6 +93,7 @@ public:
   void insertParentKeysIntoIndexNode(nodePointer parent, nodePointer receivingNode);
   void insertChildrenIntoIndexNode(nodePointer node, nodePointer receiver);
   void percolateUpwards(nodePointer parent);
+  nodePointer sharedElder(nodePointer a, nodePointer b);
 
   // methods
   void initialize(int m)
@@ -95,9 +101,10 @@ public:
     //m (like m-way tree) - every node except root can have at most m children
     maxKids = m;
     // at least ceil(m/2) children
-    minKids = ceil(maxKids / 2);
+    minKids = ceil(maxKids/ 2.0);
+    //cout << "minKids: " << minKids << endl;
     // there can be between ceil(m/2)-1 keys and m-1 keys unless you are the root, then your minKeys = 2
-    minKeys = ceil(maxKids / 2) - 1;
+    minKeys = minKids - 1;
     if(minKeys == 0)
     {
       minKeys++;
@@ -638,7 +645,26 @@ public:
       cout << "]" << endl;
       //cout << "btw, numkeys in " << name << " were " << node->numKeys << endl;
     }
-    
+  }
+
+  // prints the key-value pairs
+  void printNodePairs(string name, nodePointer node)
+  {
+    if(node == nullptr)
+    {
+      cout << name << " is blank right now" << endl;
+    }
+    else
+    {
+      cout << name << ": [";
+      for(int i = 0 ; i < node->numKeys; i++)
+      {
+        node->keyValues[i].printPair();
+        cout << " ";
+      }
+      cout << "]" << endl;
+      //cout << "btw, numkeys in " << name << " were " << node->numKeys << endl;
+    }
   }
 
   // goes through the node and prints all the children on a new line
@@ -683,7 +709,7 @@ public:
           {
             printChildren("child at 0", root->children[0]);
             printChildren("child at 1", root->children[1]);
-            if(root->children[0]->children[2] != nullptr)
+            if(root->numKids > 2)
             {
               printChildren("child at 3", root->children[2]);
             }
@@ -719,6 +745,23 @@ public:
     {
       startHere = startHere->nextLeaf;
       printNode("linked list",startHere);
+    }
+  }
+
+  // print linked list starting with key1
+  void printLinkedListPairs(int key1)
+  {
+    if(root == nullptr)
+    {
+      return;
+    }
+    nodePointer current = determineLeafNode(key1);
+    cout << "Linked list starting at " << key1 << endl;
+    printNodePairs("linked list",current);
+    while(current->nextLeaf != nullptr)
+    {
+      current = current->nextLeaf;
+      printNodePairs("linked list",current);
     }
   }
 

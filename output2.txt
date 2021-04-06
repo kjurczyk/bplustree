@@ -1,0 +1,237 @@
+file_name is input_file1.txt
+Initialize(5)
+PRINT-TREE
+root is blank right now
+Insert(21, 0.3534)
+PRINT-TREE
+root: [21 ]
+Linked list starting at 0
+linked list: [21 ]
+Insert(108, 31.907)
+PRINT-TREE
+root: [21 108 ]
+Linked list starting at 0
+linked list: [21 108 ]
+Insert(56089, 3.26)
+PRINT-TREE
+root: [21 108 56089 ]
+Linked list starting at 0
+linked list: [21 108 56089 ]
+Insert(234, 121.56)
+PRINT-TREE
+root: [21 108 234 56089 ]
+Linked list starting at 0
+linked list: [21 108 234 56089 ]
+Insert(4325, -109.23)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 108 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 108 ]
+linked list: [234 4325 56089 ]
+Delete (108)
+numKeys: 1 and minKeys: 1
+sacrificialNode->numKeys >= minKeys so I am done
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 ]
+linked list: [234 4325 56089 ]
+Search(234)
+121.56
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 ]
+linked list: [234 4325 56089 ]
+Insert(102, 39.56)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 102 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 102 ]
+linked list: [234 4325 56089 ]
+Insert(65, -3.95)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 65 102 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 65 102 ]
+linked list: [234 4325 56089 ]
+Delete (102)
+numKeys: 2 and minKeys: 1
+sacrificialNode->numKeys >= minKeys so I am done
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [21 65 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [21 65 ]
+linked list: [234 4325 56089 ]
+Delete (21)
+numKeys: 1 and minKeys: 1
+sacrificialNode->numKeys >= minKeys so I am done
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [65 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [65 ]
+linked list: [234 4325 56089 ]
+Insert(106, -3.91)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [65 106 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [65 106 ]
+linked list: [234 4325 56089 ]
+Insert(107, -3.91)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [65 106 107 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [65 106 107 ]
+linked list: [234 4325 56089 ]
+Insert(108, -3.91)
+PRINT-TREE
+root: [234 ]
+root has 2 kids
+child : [65 106 107 108 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [65 106 107 108 ]
+linked list: [234 4325 56089 ]
+Insert(23, 3.55)
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 65 ]
+child : [106 107 108 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 65 ]
+linked list: [106 107 108 ]
+linked list: [234 4325 56089 ]
+Search(23, 108)
+0.3534, 3.55, -3.91, -3.91, -3.91
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 65 ]
+child : [106 107 108 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 65 ]
+linked list: [106 107 108 ]
+linked list: [234 4325 56089 ]
+Insert(32, 0.02)
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 32 65 ]
+child : [106 107 108 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 32 65 ]
+linked list: [106 107 108 ]
+linked list: [234 4325 56089 ]
+Insert(220, 3.55)
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 32 65 ]
+child : [106 107 108 220 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 32 65 ]
+linked list: [106 107 108 220 ]
+linked list: [234 4325 56089 ]
+Search(33)
+Null
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 32 65 ]
+child : [106 107 108 220 ]
+child : [234 4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 32 65 ]
+linked list: [106 107 108 220 ]
+linked list: [234 4325 56089 ]
+Delete (234)
+numKeys: 2 and minKeys: 1
+sacrificialNode->numKeys >= minKeys so I am done
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 32 65 ]
+child : [106 107 108 220 ]
+child : [4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 32 65 ]
+linked list: [106 107 108 220 ]
+linked list: [4325 56089 ]
+Search(4325)
+-109.23
+PRINT-TREE
+root: [106 234 ]
+root has 3 kids
+child : [23 32 65 ]
+child : [106 107 108 220 ]
+child : [4325 56089 ]
+no kids to print
+no kids to print
+Linked list starting at 0
+linked list: [23 32 65 ]
+linked list: [106 107 108 220 ]
+linked list: [4325 56089 ]

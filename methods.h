@@ -127,7 +127,8 @@ void doStuffWithCommand(string instructions[3], BPTree &bpt)
   }
    // after every command, print the tree
    bpt.printTree();
-   bpt.printLinkedList(0);
+   //bpt.printLinkedList(0);
+   bpt.printLinkedListPairs(0);
 }
 
 // // returns the value associated with the key

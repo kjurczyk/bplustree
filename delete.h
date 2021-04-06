@@ -47,6 +47,7 @@
   // if you have no sibling to pull from, you must be the root and you are done
 void BPTree::deletePair(int key)//, bool alreadyChecked) // if all nodes were deleted, set hasRoot to false
 {
+  cout << "---------------------------------------------------------" << endl;
   // first step is checking that the root is not nullptr - if it is nullptr, return immediately
   if(root == nullptr)
   {
@@ -56,7 +57,9 @@ void BPTree::deletePair(int key)//, bool alreadyChecked) // if all nodes were de
   // find the node that needs to be deleted from
   nodePointer sacrificialNode = determineLeafNode(key);
   // delete the key and keyValue pair from the keys array and keyValues array, respectively
+  printNodePairs("sacrificial node pairs", sacrificialNode);
   deleteKeyAndKeyValuePair(sacrificialNode, key);
+  
 // if you have alreadyChecked if this is it, you are done now
   // if(alreadyChecked)
   // {
@@ -128,7 +131,18 @@ void BPTree::deletePair(int key)//, bool alreadyChecked) // if all nodes were de
   // is the parent legal (does it have at least numKeys >= minimumKeys?)?
   if(parent->numKeys >= minKeys)
   {
-    cout << "The parent is ok as it is! Returning." << endl;
+    cout << "The parent is ok as it is! " << endl;
+    /*
+    parent = findParent(parent);
+    recalculateParentKeys(parent);
+    cout << "Recalculated some keys! " << endl;
+    while(parent != root && parent != nullptr)
+    {
+      recalculateParentKeys(parent);
+      cout << "Recalculated some keys! " << endl;
+      parent = findParent(parent);
+    }*/
+    cout << "root has been reached! All done." << endl;
     // you are done! nothing needs to be fixed
     return;
   }
@@ -156,6 +170,11 @@ void BPTree::deletePair(int key)//, bool alreadyChecked) // if all nodes were de
 
 void BPTree::percolateUpwards(nodePointer parent)
 {
+  printNode("parent", parent);
+  if(parent == root)  // the root has different rules on how many keys are allowed in it
+  {
+    return;
+  }
   // the parent node is empty, or close to it!
     // merge with the sibling (it's the sibling of the parent this time)
     nodePointer siblingOfParent = getLegalIndexSibling(parent);
@@ -163,10 +182,12 @@ void BPTree::percolateUpwards(nodePointer parent)
     // pull the parent's parent key into the siblingOfParent
     nodePointer parentOfParent = findParent(parent);
     insertParentKeysIntoIndexNode(parentOfParent, siblingOfParent); // the parent of the parent is sucked dry
+    
     insertChildrenIntoIndexNode(parent, siblingOfParent); // the parent is sucked dry
     // is the parent of the parent deficient now? Yes
     if(parentOfParent->isRoot == true)  // if this is the root, just delete the root and make the siblingOfParent the new root
     {
+      parentOfParent->isRoot = false;
       root = siblingOfParent;
       root->isRoot = true;
       // now you are done!
@@ -272,7 +293,7 @@ void BPTree::deleteLeafNode(nodePointer node, nodePointer parent)
   // the number of keys will also decrease by 1
   parent->numKeys--;
   recalculateParentKeys(parent);
-  cout << "finished recalculating parent" << endl;
+  if(DEBUG)cout << "finished recalculating parent" << endl;
   // remove the node from the linked list
   // need to link its prev->next and next->prev
   if(node->nextLeaf != nullptr )
@@ -295,6 +316,27 @@ void BPTree::deleteLeafNode(nodePointer node, nodePointer parent)
   cout << "got to the end of the linked list" << endl;
   // going back to the parent, is the parent still legal? That isn't under the leaf node's jurisdiction
 }
+
+// find youngest shared elder
+// given two nodes that are on the same level
+BPTree::nodePointer BPTree::sharedElder(nodePointer a, nodePointer b)
+{
+  nodePointer aParent = findParent(a);
+  nodePointer bParent = findParent(b);
+  if(aParent == nullptr || bParent == nullptr)
+  {
+    return root;
+  }
+  if(aParent == bParent)  // the last 2 should never need to be called, but
+  {
+    return aParent;
+  }
+  else
+  {
+    return sharedElder(aParent, bParent);
+  }
+}
+
 
 // insertNewNodeAtLocation(Pair pair, nodePointer parent, sibling, isBigger, -1)
 // you received a pair to insert into the children array of parent
@@ -342,7 +384,7 @@ void BPTree::insertAsReplacement(nodePointer node, nodePointer parent, nodePoint
     node->keys[node->numKeys] = sibling->keys[0];
     node->keyValues[node->numKeys] = sibling->keyValues[0];
     node->numKeys++;
-
+cout << "successfully changed the node's numKeys to " << node->numKeys << endl;
     // recalculate the keys of the parent
     recalculateParentKeys(parent);
 
@@ -354,6 +396,8 @@ void BPTree::insertAsReplacement(nodePointer node, nodePointer parent, nodePoint
       //    update the parent so that the key at childNumOfSibling-1 = bigger sibling's now smallest number
       //updateLargerLender(findParent(sibling), childNumOfSibling);
       recalculateParentKeys(findParent(sibling));
+cout << "recalculated stuff" << endl;
+      
     //}
     
   }
@@ -375,6 +419,12 @@ void BPTree::insertAsReplacement(nodePointer node, nodePointer parent, nodePoint
     //updateSmallerLender(findParent(sibling), childNumOfSibling);
     recalculateParentKeys(findParent(sibling));
   }
+
+/////////////////////
+  // if(parent != findParent(sibling)) // if the two changed parents are not the same parent, find the lowest common node and update its keys
+  //     {
+  //       recalculateParentKeys(sharedElder(node, sibling));  // recalculate the lowest common denominator parent
+  //     }
 }
 
 void BPTree::recalculateParentKeys(nodePointer parent)
@@ -479,8 +529,9 @@ bool BPTree::deleteKey(nodePointer toBeDeletedFrom, int key)
 bool BPTree::deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues)
 {
   bool found = false;
-  for(int i = 0; i < toBeDeletedFrom->numKeys-1; i++)
+  for(int i = 0; i < toBeDeletedFrom->numKeys; i++)
   {
+
     if(toBeDeletedFrom->keyValues[i].key==key) // if you find the key you are looking for
     {
       found = true;
