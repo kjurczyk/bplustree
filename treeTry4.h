@@ -504,9 +504,10 @@ public:
     
     while(seeker->isLeaf == false)
     {
+      printNode("current seeker", seeker);
       traveller = determineWhichChildToTravelDown(seeker, child->keys[0]);
       
-      if(DEBUG)printNode("traveller was found to be", traveller);
+      printNode("traveller was found to be", traveller);
       //printNode("child being looked for", child);
       if(traveller == child) 
       {

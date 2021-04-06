@@ -131,12 +131,17 @@ void BPTree::deletePair(int key)//, bool alreadyChecked) // if all nodes were de
       return; // you should never get here because there should always be at least 1 sibling and
       // now we have checked all the siblings - something should have previously existed
     }
-  
+  cout << "made it out of the if else jungle" << endl;
   // if there is a grandparent
 // make sure that the grandparent has the most up-to-date info on its keys
 if(!parent->isRoot) // if the parent is not the root, there must be a parent of it. Update it
 {
+  cout << "updating grandparent" << endl;
+  printNode("parent is not the root. parent for reference", parent);
+  printTree();
+  printNode("grandparent should be", findParent(parent));
   updateGrandparent(findParent(parent));
+  cout << "finisehd updating grandparent" << endl;
 }
   
 
@@ -283,6 +288,8 @@ void BPTree::mergeWithSibling(nodePointer node, nodePointer parent, nodePointer 
     if(parentOfSibling->numKeys >= minKeys)
     {
       cout << "finished with merging the sibling. Going to do one more thing." << endl;
+      updateGrandparent(root);
+      return; //    ADDED THIS HERE
     }
     if(parentOfSibling->isRoot)
     {
@@ -291,6 +298,11 @@ void BPTree::mergeWithSibling(nodePointer node, nodePointer parent, nodePointer 
       node->isRoot = true;
       printTree();
       cout << "I reset the root to the above tree. Now returning." << endl;
+      return;
+    }
+    else if(parentOfSibling->numKeys >= minKeys)  // PROBABLY UNNECESSARY
+    {
+      cout << "the parent had an ok number of keys, so I am returning" << endl;
       return;
     }
     else
@@ -313,12 +325,28 @@ void BPTree::mergeWithSibling(nodePointer node, nodePointer parent, nodePointer 
 // updates the grandparent's keys to look at the 
 void BPTree::updateGrandparent(nodePointer node)
 {
+  printNode("grandparent being updated", node);
   //nodePointer childAtIPlus1;
-  for(int i = 0 ; i < node->numKeys; i++)
+  if(node == nullptr)
   {
-    // look at the child at i and update the appropriate key
-    node->keys[i] = node->children[i+1]->children[0]->keys[0];  // I know this exists because this one is a grandparent
+    // just update the root and call it done
+    for(int i = 0 ; i < root->numKeys; i++)
+    {
+      cout << "i: " << i << endl;
+      // look at the child at i and update the appropriate key
+      root->keys[i] = root->children[i+1]->children[0]->keys[0];  // I know this exists because this one is a grandparent
+    }
   }
+  else
+  {
+    for(int i = 0 ; i < node->numKeys; i++)
+    {
+      cout << "i: " << i << endl;
+      // look at the child at i and update the appropriate key
+      node->keys[i] = node->children[i+1]->children[0]->keys[0];  // I know this exists because this one is a grandparent
+    }
+  }
+  
 }
 
 void BPTree::percolateUpwards(nodePointer parent)
@@ -397,6 +425,7 @@ BPTree::nodePointer BPTree::getLegalIndexSibling(nodePointer index)
     if(parent->children[i] != index && bestSibling == nullptr)
     {
       bestSibling = parent->children[i];
+      printNode("found first bestSibling", bestSibling);
     }
     // whenever the current child we are looking at is smaller than the index, make the current child the bestSibling
     // because it's an improvement
@@ -406,6 +435,7 @@ BPTree::nodePointer BPTree::getLegalIndexSibling(nodePointer index)
       // grab it if the child exists, otherwise, don't do anything
       // don't bother continuing with the iteration if you reached through the index already
       bestSibling = parent->children[i+1];
+      printNode("returning bestSibling", bestSibling);
       return bestSibling;
     }
     else  // it must be smaller, because as soon as it's equal we drop out
@@ -413,6 +443,7 @@ BPTree::nodePointer BPTree::getLegalIndexSibling(nodePointer index)
       bestSibling = parent->children[i];
     }
   }
+  printNode("returning bestSibling1", bestSibling);
   return bestSibling;
 }
 
@@ -559,7 +590,7 @@ cout << "successfully changed the node's numKeys to " << node->numKeys << endl;
       //    update the parent so that the key at childNumOfSibling-1 = bigger sibling's now smallest number
       //updateLargerLender(findParent(sibling), childNumOfSibling);
       recalculateParentKeys(findParent(sibling));
-cout << "recalculated stuff" << endl;
+cout << "recalculated stuff" << endl; 
       
     //}
     

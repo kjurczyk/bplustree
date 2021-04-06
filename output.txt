@@ -24,6 +24,16 @@ Linked list starting at 0
 linked list: [5(31.907) ]
 linked list: [9(0.3534) 16(3.26) ]
 Insert(30, 121.56)
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+i is: 1
+j is: 1
+j is: 2
+i is: 2
+j is: 2
 PRINT-TREE
 root: [9 16 ]
 root has 3 kids
@@ -52,6 +62,21 @@ linked list: [1(-109.23) 5(31.907) ]
 linked list: [9(0.3534) ]
 linked list: [16(3.26) 30(121.56) ]
 Insert(6, 39.56)
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+j is: 3
+i is: 1
+j is: 1
+j is: 2
+j is: 3
+i is: 2
+j is: 2
+j is: 3
+i is: 3
+j is: 3
 PRINT-TREE
 root: [9 ]
 root has 2 kids
@@ -69,6 +94,16 @@ linked list: [5(31.907) 6(39.56) ]
 linked list: [9(0.3534) ]
 linked list: [16(3.26) 30(121.56) ]
 Insert(40, -3.95)
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+i is: 1
+j is: 1
+j is: 2
+i is: 2
+j is: 2
 PRINT-TREE
 root: [9 ]
 root has 2 kids
@@ -166,6 +201,16 @@ linked list: [9(0.3534) ]
 linked list: [16(3.26) 17(121.56) ]
 linked list: [30(121.56) 40(-3.95) ]
 Insert(2,1.2)
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+i is: 1
+j is: 1
+j is: 2
+i is: 2
+j is: 2
 PRINT-TREE
 root: [9 ]
 root has 2 kids
@@ -187,6 +232,31 @@ linked list: [9(0.3534) ]
 linked list: [16(3.26) 17(121.56) ]
 linked list: [30(121.56) 40(-3.95) ]
 Insert(18,2.3)
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+j is: 3
+i is: 1
+j is: 1
+j is: 2
+j is: 3
+i is: 2
+j is: 2
+j is: 3
+i is: 3
+j is: 3
+sorting children
+i is: 0
+j is: 0
+j is: 1
+j is: 2
+i is: 1
+j is: 1
+j is: 2
+i is: 2
+j is: 2
 PRINT-TREE
 root: [9 17 ]
 root has 3 kids
@@ -213,181 +283,11 @@ linked list: [17(121.56) 18(2.3) ]
 linked list: [30(121.56) 40(-3.95) ]
 Delete(16)
 ---------------------------------------------------------
-sacrificial node pairs: []
+sacrificial node pairs: [16(3.26) ]
 I found a larger leaf to replace mine.
 successfully changed the node's numKeys to 1
-recalculated stuff
-The parent is ok as it is! 
-root has been reached! All done.
-PRINT-TREE
-root: [17 30 ]
-root has 3 kids
-child : [2 5 ]
-child : [17 ]
-child : [30 ]
-child at 0 has 3 kids
-child : [1 ]
-child : [2 3 ]
-child : [5 6 ]
-child at 1 has 2 kids
-child : [9 ]
-child : [17 ]
-child at 3 has 2 kids
-child : [18 ]
-child : [30 40 ]
-Linked list starting at 0
-linked list: [1(-109.23) ]
-linked list: [2(1.2) 3(39.56) ]
-linked list: [5(31.907) 6(39.56) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
-Delete(1)
----------------------------------------------------------
-sacrificial node pairs: []
-I found a larger leaf to replace mine.
-successfully changed the node's numKeys to 1
-recalculated stuff
-The parent is ok as it is! 
-root has been reached! All done.
-PRINT-TREE
-root: [17 30 ]
-root has 3 kids
-child : [3 5 ]
-child : [17 ]
-child : [30 ]
-child at 0 has 3 kids
-child : [2 ]
-child : [3 ]
-child : [5 6 ]
-child at 1 has 2 kids
-child : [9 ]
-child : [17 ]
-child at 3 has 2 kids
-child : [18 ]
-child : [30 40 ]
-Linked list starting at 0
-linked list: [2(1.2) ]
-linked list: [3(39.56) ]
-linked list: [5(31.907) 6(39.56) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
-Delete(2)
----------------------------------------------------------
-sacrificial node pairs: []
-I found a larger leaf to replace mine - it's not strictly legal but oh well.
-node being deleted: []
-parent of node being deleted: [3 5 ]
+numKids-1: 1
 i: 0
-found
-sibling: [3 ]
-i: 1
-sibling: [5 6 ]
-got to the end of the linked list
-The parent is ok as it is! 
-root has been reached! All done.
-PRINT-TREE
-root: [17 30 ]
-root has 3 kids
-child : [5 ]
-child : [17 ]
-child : [30 ]
-child at 0 has 2 kids
-child : [3 ]
-child : [5 6 ]
-child at 1 has 2 kids
-child : [9 ]
-child : [17 ]
-child at 3 has 2 kids
-child : [18 ]
-child : [30 40 ]
-Linked list starting at 0
-linked list: [3(39.56) ]
-linked list: [5(31.907) 6(39.56) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
-Delete(3)
----------------------------------------------------------
-sacrificial node pairs: []
-I found a larger leaf to replace mine.
-successfully changed the node's numKeys to 1
-recalculated stuff
-The parent is ok as it is! 
-root has been reached! All done.
-PRINT-TREE
-root: [17 30 ]
-root has 3 kids
-child : [6 ]
-child : [17 ]
-child : [30 ]
-child at 0 has 2 kids
-child : [5 ]
-child : [6 ]
-child at 1 has 2 kids
-child : [9 ]
-child : [17 ]
-child at 3 has 2 kids
-child : [18 ]
-child : [30 40 ]
-Linked list starting at 0
-linked list: [5(31.907) ]
-linked list: [6(39.56) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
-Delete(6)
----------------------------------------------------------
-sacrificial node pairs: []
-I found a larger leaf to replace mine - it's not strictly legal but oh well.
-node being deleted: []
-parent of node being deleted: [6 ]
+numKids-1: 1
 i: 0
-got to the end of the linked list
-percolating upwards
-parent: []
-getLegalIndexSibling
-parent: [17 30 ]
-bestSibling is blank right now
-parent->numKeys: 2
-siblingOfParent: [17 ]
-PRINT-TREE
-root: [17 17 30 ]
-root has 3 kids
-child : [5 ]
-child : [9 ]
-child : [17 ]
-no kids to print
-no kids to print
-no kids to print
-Linked list starting at 0
-linked list: [5(31.907) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
-Delete(9)
----------------------------------------------------------
-sacrificial node pairs: [5(31.907) ]
-numKeys: 1 and minKeys: 1
-sacrificialNode->numKeys >= minKeys so I am done
-PRINT-TREE
-root: [17 17 30 ]
-root has 3 kids
-child : [5 ]
-child : [9 ]
-child : [17 ]
-no kids to print
-no kids to print
-no kids to print
-Linked list starting at 0
-linked list: [5(31.907) ]
-linked list: [9(0.3534) ]
-linked list: [17(121.56) ]
-linked list: [18(2.3) ]
-linked list: [30(121.56) 40(-3.95) ]
+recalculated stuff
