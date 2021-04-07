@@ -1,35 +1,47 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-using std::string;
-using namespace std;
-#include <math.h>
-#include <algorithm>
-#include <array>
 
+
+
+#include <iostream> // enables taking input from the user
+#include <fstream>  // enables taking input from files
+#include <ostream>  // enables outputting from files
+#include <string>   // enables using strings
+#include <vector>   // enables using vectors for my strings
+using std::string;  // enables using string instead of std::string
+using namespace std;// important for something
+#include <locale>   // not sure the importance of this, but the program works with it
+#include <math.h>   // enables ceiling function
+#include <algorithm>// enables some math
+#include <array>    // at some point I used array, this may be extraneous now
+#include <sstream>  // enables me to change numbers to strings easily
+
+// global variable used for debugging purposes. Set this to true to print out what the tree is 
+// looking like at different points in time and which point you are at in the code
 bool DEBUG = false;
-// class which holds the key and value, allows editing and deleting
+
+/////////////////////////////////////////////////////////////////////////
+// class which holds the key and value, allows editing and printing
+/////////////////////////////////////////////////////////////////////////
 class Pair
 {
   public:
+
   // You can use integer as the type of the key and float/double as the type of the value.
   int key;
   float value;
 
-  Pair(int k, float v)
+  Pair(int k, float v)  // initialize with key and value
   {
     key = k;
     value = v;
   }
 
-  Pair()
+  Pair()  // initialize key and value to 0
   {
     key = 0;
     value = 0;
   }
 
-  void printPair()
+  void printPair()  // print the pair in the form key(value)
   {
     cout << key << "(" << value << ")";
   }
@@ -52,72 +64,74 @@ class BPTree
 private:
   // a structure in the BPTree class - aka one node within the class
   struct nodeObject
-  {                 //Create the node object with values of data, position, and endPosition
-    int numKeys = 0;
-    
+  {                 
+    int numKeys = 0;  // number of keys in this node
+    int numKids = 0;  // number of children in the node (numKids - 1 = numKeys)
     nodeObject *prevLeaf = nullptr; // holds a pointer to the previous leaf, if this is a leaf node - otherwise we won't use this
     nodeObject *nextLeaf = nullptr; // holds a pointer to the next leaf, if this is a leaf node - otherwise we won't use it
     // we also won't know until later how many keys will be stored in here
     int *keys;           // should be empty if this is a leaf node
     Pair *keyValues;     // should be empty if this is an index node
-    bool isLeaf;
-    bool isRoot;
-    // we won't know until later how many children there will be, so make an array of child pointers
-    nodeObject **children; // holds pointers to the children - set it to null when you can
-    int numKids = 0;
+    nodeObject **children; // an array which holds pointers to the children - set it to null when you can
+    bool isLeaf;  // true if this node is a leaf
+    bool isRoot;  // true if this node is a root
   };
+
   typedef nodeObject *nodePointer; //define pointers to node objects - makes it easier for me later on
-  nodePointer root;            // pointer to the root node
+  nodePointer root; // pointer to the root node
   // least ceil(m/2) children, and at most m children
-  // there can be between ceil(m/2)-1 keys and m-1 keys
   int minKids = 0; // at least ceil(m/2) children
   int maxKids = 1; // at most m children
-  int minKeys = 0;
-  int maxKeys = 1;
-  //bool hasRoot = false; // true if a root exists already, false if not
+  // there can be between ceil(m/2)-1 keys and m-1 keys
+  int minKeys = 0;  // ceil(m/2)-1 keys
+  int maxKeys = 1;  // m-1 keys
 
 public:
-  void deletePair(int key);//, bool alreadyChecked); // if all nodes were deleted, set hasRoot to false
-  std::string search(int key);
-  std::string search(int key, int key2);
-  bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);
-  bool deleteKey(nodePointer toBeDeletedFrom, int key);
-  bool deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues);
-  int determineChildNum(nodePointer parent, nodePointer child);
-  void insertAsReplacement(nodePointer issue, nodePointer parentOfIssue, nodePointer sibling, bool isBigger);//, int childNumOfSibling);
-  void updateLargerLender(nodePointer parent, int childNumOfSibling);
-  void updateSmallerLender(nodePointer parent, int childNumOfSibling);
-  void recalculateParentKeys(nodePointer parent);
-  void deleteNode(nodePointer node, nodePointer parent);
-  nodePointer getLegalIndexSibling(nodePointer index);
-  void insertParentKeysIntoIndexNode(nodePointer parent, nodePointer receivingNode);
-  void insertChildrenIntoIndexNode(nodePointer node, nodePointer receiver);
-  void percolateUpwards(nodePointer parent);
-  nodePointer sharedElder(nodePointer a, nodePointer b);
-  void mergeWithSibling(nodePointer node, nodePointer parent, nodePointer sibling, nodePointer parentOfSibling);
-  void updateGrandparent(nodePointer node);
+// methods
+  void deletePair(int key); // deletes a pair from a node and is responsible for calling all other functions pertaining to delete
+  std::string search(int key);  // searches for the value which corresponds to key
+  std::string search(int key, int key2);  // searches for the range of values which correspond to keys that are >key1 and <key2
+  bool deleteKeyAndKeyValuePair(nodePointer toBeDeletedFrom, int key);  // deletes a key and keyValue pair from a leaf node
+  bool deleteKey(nodePointer toBeDeletedFrom, int key); // deletes the key from a node & decreases numKey
+  bool deleteKeyValuePair(nodePointer toBeDeletedFrom, int key, int numKeyValues);  // deletes a keyValue from a leaf node
+  int determineChildNum(nodePointer parent, nodePointer child); // determines the number of the child in the parent's children array
+  void insertAsReplacement(nodePointer issue, nodePointer parentOfIssue, nodePointer sibling, bool isBigger); // replaces keys/values in one node with keys/values with another node
+  void recalculateParentKeys(nodePointer parent); // recalculates the keys in the given node using the array of children
+  void deleteNode(nodePointer node, nodePointer parent);  // deletes a node from its parent (over-writes that child pointer with another to make the parent forget it existed)
+  nodePointer getLegalIndexSibling(nodePointer index);    // returns a nodePointer to the best sibling to borrow from (built for index nodes because leaf nodes have sibling pointers)
+  void insertParentKeysIntoIndexNode(nodePointer parent, nodePointer receivingNode);  // pull the parent's keys down into the index node given
+  void insertChildrenIntoIndexNode(nodePointer node, nodePointer receiver); // insert children from a given node into the receiving node which has too few children
+  void percolateUpwards(nodePointer parent);  // checks if the parent is legal and if not, redoes the merge
+  nodePointer sharedElder(nodePointer a, nodePointer b);  // finds the youngest shared elder of a and b (e.g. if a and b are cousins, a pointer to the grandparent would be returned)
+  void mergeWithSibling(nodePointer node, nodePointer parent, nodePointer sibling, nodePointer parentOfSibling);  // merge a sibling into a node, and make sure that both parents are ok
+  void updateGrandparent(nodePointer node); // update the keys of the grandparent to make sure they are alright
 
-  // methods
-  void initialize(int m)
+  ///////////////////////////////////////////////////////
+  // initialize the m-way tree
+  ///////////////////////////////////////////////////////
+  void initialize(int m)  // initializes the m-way tree
   {
     //m (like m-way tree) - every node except root can have at most m children
     maxKids = m;
-    // at least ceil(m/2) children
-    minKids = ceil(maxKids/ 2.0);
-    //cout << "minKids: " << minKids << endl;
+    minKids = ceil(maxKids/ 2.0); // at least ceil(m/2) children
+    
     // there can be between ceil(m/2)-1 keys and m-1 keys unless you are the root, then your minKeys = 2
     minKeys = minKids - 1;
     if(minKeys == 0)
     {
       minKeys++;
     }
-    maxKeys = maxKids - 1;
-    root = nullptr;
+
+    maxKeys = maxKids - 1;  // keys is 1 less than max children
+    root = nullptr; // initalize root to nullptr
     if(DEBUG)cout << "New " << maxKids << "-way tree was initialized" << endl;
   }
 
+  //////////////////////////////////////////////////////////
   // insert a key-value pair into a leaf node
-  void insert(int key, float value)
+  // and attach it to the root if it is a new leaf node
+  //////////////////////////////////////////////////////////
+  void insert(int key, float value) // insert a key-value pair into a leaf node
   {
     if(DEBUG)cout << "INSERT" << endl;
     // create a new nodePointer and 
@@ -125,19 +139,19 @@ public:
     nodePointer current = determineLeafNode(key);
     if(DEBUG)cout << "need to insert a new node here: " << endl;
     if(DEBUG)printNode("insert new node here", current);
+
     // if the nodePointer is currently nullptr, there is no root yet, so make one
     //  initialize new node
     //  newNode is a leaf and a root
     //  root = newNode
-    //printTree();
     if(current == nullptr)
     {
-      //cout << "hi" << endl;
       current = initializeNode();
       if(DEBUG)cout << "just initialized a node as a root node" << endl;
-      current->isLeaf = true;
+      // there is no root yet, so this is a root and a leaf
+      current->isLeaf = true; 
       current->isRoot = true;
-      root = current;
+      root = current; // set the root to be this new node you just created
     }
     
     // this happens regardless of whether it's a new root or not
@@ -159,6 +173,7 @@ public:
     {
       return;
     }
+
     // else the numKeys > maxKeys, you need to:
     //  split the node in half
     //    create a large leaf node by initializing it
@@ -168,9 +183,9 @@ public:
     //    this large leaf increases numKeys with each pair it gets
     //  this current leaf node can keep all the key-value pairs, just update numKeys to be 
     //  how many numKeys it's actually supposed to have, namely maxKids/2
-    //if(current->numKeys > maxKeys)
-    //{
+    
       if(DEBUG)cout << "NumKeys > maxKeys" << endl;
+
       nodePointer largeLeaf = initializeNode();
       largeLeaf->isLeaf = true;
       largeLeaf->isRoot = false;
@@ -191,17 +206,19 @@ public:
       }
       if(DEBUG)printNode("large", largeLeaf);
       current->numKeys = smallLeafKeys;
-    //}
+    
     
     // run the stepAfter the split(current Leaf, largeLeaf)
-    stepAfterSplit(current, largeLeaf, -999);
+    // -999 indicates that there is no specific number that needs 
+    // to be inserted into the parent, just use the default one
+    stepAfterSplit(current, largeLeaf, -999); 
 
     // find the parent
     nodePointer parent = findParent(current);
+
     // if you reach here, you have definitely inserted a leaf node
     // iterate through the leaf nodes of the new parent, and assign every middle child
     // to what its new siblings are
-    
     assignSiblingsDuringInsert(parent);
     // after you've gone through the entire sibling array of this parent, just check if more siblings popped up somewhere
     // start at the leftmost leaf and work your way right
@@ -209,8 +226,12 @@ public:
     if(DEBUG)printLinkedListGivenPointer(parent->children[0]);
   }
 
+  /////////////////////////////////////////////////////////////////////
   // checks all the sibling pointers, starting at the smallest node
-  void checkAllSiblings(nodePointer first, nodePointer last)
+  // and makes sure they are set correctly
+  // does the same in the opposite direction, from the largest node
+  /////////////////////////////////////////////////////////////////////
+  void checkAllSiblings(nodePointer first, nodePointer last)  // checks all the sibling pointers, starting at the smallest node
   {
     while(first->nextLeaf != nullptr)
     {
@@ -235,23 +256,24 @@ public:
     }
   }
 
-
+  /////////////////////////////////////////////////////////////////////////
   // assign siblings
-      // if it's the first child, assign the next sibling
-      //  also look backwards and possibly re-assign the prev sibling
-      //  if your previousNode != nullptr, you have someone behind you who might have someone in front of them
-      //    look at the previous node's next node. If the previous node's next node is not you, make that your previous node instead
-      
-      // else if it's the last child, assign the previous sibling
-      // also look forward and possibly re-assign the next sibling
-      //  if your nextNode != nullptr, you have someone in front of you who might have someone behind them
-      //    look at the next node's previous node. If the next node's previous node is not you, make that your next node instead
-
-      // else it is a middle child
-      // simply assign the next and previous nodes accordingly
-  void assignSiblingsDuringInsert(nodePointer parent)
+  // if it's the first child, assign the next sibling
+  //  also look backwards and possibly re-assign the prev sibling
+  //  if your previousNode != nullptr, you have someone behind you who might have someone in front of them
+  //    look at the previous node's next node. If the previous node's next node is not you, make that your previous node instead
+  //
+  // else if it's the last child, assign the previous sibling
+  // also look forward and possibly re-assign the next sibling
+  //  if your nextNode != nullptr, you have someone in front of you who might have someone behind them
+  //    look at the next node's previous node. If the next node's previous node is not you, make that your next node instead
+  //
+  // else it is a middle child
+  // simply assign the next and previous nodes accordingly
+  /////////////////////////////////////////////////////////////////////////
+  void assignSiblingsDuringInsert(nodePointer parent) // when you insert a new node, assign the siblings to each other (nextLeaf, prevLeaf)
   {
-    for(int i = 0; i < parent->numKids; i++)
+    for(int i = 0; i < parent->numKids; i++)  // go through the children array in of the parent node given
     {
       if(i == 0)  // if it's the first child
       {
@@ -279,27 +301,18 @@ public:
         }
       }
 
-      else
+      else  // else it is a middle child
       {
         if(DEBUG)cout << "assigned child at " << i << " from else" << endl;
         parent->children[i]->nextLeaf = parent->children[i+1];
         parent->children[i]->prevLeaf = parent->children[i-1];
       }
-      // if(i > 0)  // if it's not the first child, assign the previous pointer
-      // {
-      //   parent->children[i]->prevLeaf = parent->children[i-1];
-      // }
-      // if(i < parent->numKids-1)  // if it's not the last child, assign the next pointer
-      // {
-      //   parent->children[i]->nextLeaf = parent->children[i+1];
-      // }
-      // if(i == 0)  // there might be children behind you - check if there is a pair you're missing
-      // if(i == parent->numKids - 1)  // there might be 
     }
-
 
   }
 
+  ///////////////////////////////////////////////////////////////////////////////////
+  // determine the appropriate node of a given key (used for insert, search, delete)
   // nodePointer determineLeafNode(key)
   //  if root = nullptr, return nullptr
   //  otherwise:
@@ -308,7 +321,8 @@ public:
   //    seeker = determine which child you need to travel down(seeker, key)
   //    hope that it didn't return nullptr
   //  return the seeker because you know it is a root because it came out of the while loop
-  nodePointer determineLeafNode(int key)
+  ///////////////////////////////////////////////////////////////////////////////////
+  nodePointer determineLeafNode(int key)  // determine the appropriate node of a given key (used for insert, search, delete)
   {
     if(DEBUG)cout << "DETERMINE-LEAF-NODE" << endl;
     if(DEBUG) cout << "determine leaf node, key: " << key << endl;
@@ -334,8 +348,9 @@ public:
     }
   }
 
-  // stepAfterSplit(original node, largeNode)
-      // now that you have split the node correctly, check if the original node used to be the root (isRoot)
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // stepAfterSplit(original node, largeNode)
+    // now that you have split the node correctly, check if the original node used to be the root (isRoot)
     //  if it was the root, initialize a new node
     //    set isRoot = true
     //    set isLeaf = false
@@ -351,13 +366,15 @@ public:
     //  if numKey < maxKeys, you are safe and you are done
     //  else if the numKey is now larger than it is supposed to be (aka numKey >= maxKeys)
     //    pass this now-messed-up parent to be fixed by being split
-    void stepAfterSplit(nodePointer original, nodePointer large, int numToBeMerged)
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    void stepAfterSplit(nodePointer original, nodePointer large, int numToBeMerged) // now that you have split the node correctly, check if the original node used to be the root (isRoot). if it was not the root, you need to find the parent of the current leaf
     {
       if(DEBUG)cout << "STEP-AFTER-SPLIT" << endl;
       if(DEBUG)printNode("original", original);
       if(DEBUG)printNode("largenode", large);
-      nodePointer newNode;
-      if(original->isRoot == true)
+
+      nodePointer newNode;  // make a new node
+      if(original->isRoot == true)  // was the original given node the root? if yes, make a new node and make it the root
       {
         newNode = initializeNode();
         newNode->isRoot = true;
@@ -367,7 +384,7 @@ public:
         newNode->children[1] = large;
         if(numToBeMerged != -999)
         {
-          newNode->keys[newNode->numKeys] = numToBeMerged;
+          newNode->keys[newNode->numKeys] = numToBeMerged; // if the index node split, use the given number as the last key
         }
         else
         {
@@ -379,12 +396,12 @@ public:
         root = newNode;
         if(DEBUG)printNode("new Root created", root);
       }
-      else  // this was definitely an index node but not a root
+      else  // this was an index node but not a root, so merge the parent of the given node with the large to be merged
       {
         newNode = findParent(original);
         newNode->children[newNode->numKids] = large;
         newNode->numKids++;
-        if(numToBeMerged != -999) // if the index node split
+        if(numToBeMerged != -999) // if the index node split, use the given number as the last key
         {
           newNode->keys[newNode->numKeys] = numToBeMerged;
         }
@@ -394,8 +411,8 @@ public:
         }
         
         newNode->numKeys++;
-        sortChildren(newNode->children, newNode->numKids);
-        sortKeys(newNode->keys, newNode->numKeys);
+        sortChildren(newNode->children, newNode->numKids);  // sort the children array from smallest to largest
+        sortKeys(newNode->keys, newNode->numKeys);  // sort the children array from smallest to largest
 
         // this is an index node, so it has children. If the children are leaves, make sure that they know 
         // who their siblings are
@@ -407,13 +424,13 @@ public:
           checkAllSiblings(determineLeafNode(0), determineLeafNode(99999)); // may be extraneous for some locations, but is necessary for edge cases
         }
 
-        if(newNode->numKeys <= maxKeys)  // you are almost done
+        if(newNode->numKeys <= maxKeys)  // you are done
         {
           if(DEBUG)printNode("newNode from stepAfterSplit", newNode);
           return;
         }
           
-        else  // it's >=
+        else  // if the new node has too many keys to deal with, update the parent (it's >=)
         {
           if(DEBUG)cout << "too many keys... now updating parent" << endl;
           updateParent(newNode);
@@ -423,6 +440,7 @@ public:
       
     }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // updateParent
   // we know that this is only called if numKey >= maxKeys
   // the parent has too many children and too many keys
@@ -435,7 +453,8 @@ public:
   //  the current node doesn't have its children or keys changed
   //  the current node has its numKids =(maxKids+1)/2 and numKeys =(maxKeys + 1)/2 changed
   // now that you have split the node correctly, run the stepAfterSplit(small/original node, large node)
-  void updateParent(nodePointer toBeUpdated)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void updateParent(nodePointer toBeUpdated)  // takes a given node and splits it into a smaller and larger node, then calls the step after split so we are left with one node
   {
     if(DEBUG)cout << "UPDATE-PARENT" << endl;
     nodePointer largeIndex = initializeNode();
@@ -466,7 +485,7 @@ public:
     stepAfterSplit(toBeUpdated, largeIndex, toBeUpdated->keys[smallToReceive]);
   }
 
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // void initializeNode(node)
   //  numKeys = 0;
   //  keys = new int[maxKeys+1];
@@ -474,7 +493,8 @@ public:
   //  children = new nodePointer[maxKids+1]; // holds pointers to the children - set it to null when you can
   //  int numKids = 0;
   // isLeaf and isRoot, as well as sibling pointers will be set elsewhere
-  nodePointer initializeNode()
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  nodePointer initializeNode()  // initializes a node with numKeys and also with the sizes of all the arrays - returns the new node
   {
     if(DEBUG)cout << "INITIALIZE-NODE" << endl;
     nodePointer node = new nodeObject();
@@ -486,6 +506,7 @@ public:
     return node;
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // nodePointer findParent(nodePointer)
   // start at the root
   // while(seeker != leaf) because the leaves don't have children to search
@@ -496,7 +517,8 @@ public:
   //  if yes, return the current node (which is the parent of the node it was given)
   //  if no, travel to the child and make that the new seeker
   // if you dropped out of the while loop, there is a problem. Node (and corresponding parent) not found.
-  nodePointer findParent(nodePointer child)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  nodePointer findParent(nodePointer child) // returns the parent of a given node. If the parent could not be found, return nullptr
   {
     if(DEBUG)cout << "FIND-PARENT" << endl;
     nodePointer seeker = root;
@@ -526,7 +548,7 @@ public:
     return nullptr;
   }
 
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // nodePointer determineWhichChildToTravelDown(parent, keyBeingSearchedFor)
   //  go through all the keys (numKeys) of the parent
   //  at each key, check if  is >, <, or = to the keyBeingSearchedFor
@@ -534,7 +556,8 @@ public:
   //    if the key > keyBeingSearchedFor, return the child at that key number
   //    if the key <= keyBeingSearchedFor, increase the iterator by 1
   //  we should always have returned before this, but just in case, return nullptr to indicate there was no child
-  nodePointer determineWhichChildToTravelDown(nodePointer parent, int keyBeingSearchedFor)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  nodePointer determineWhichChildToTravelDown(nodePointer parent, int keyBeingSearchedFor)  // goes through the given node and compares the keys with the key being searched for. Finds and returns a pointer to the child which should be travelled down next
   {
     if(DEBUG)cout << "DETERMINE-WHICH-CHILD-TO-TRAVEL-DOWN" << endl;
     int i = 0;
@@ -561,10 +584,11 @@ public:
   }
 
 
-
-  // sort things
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // sort an array of children, which contains keys. puts the children in order from smallest to largest
   // go through the array of children and sort them according to their smallest keys
-  void sortChildren(nodePointer *arr, int len)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void sortChildren(nodePointer *arr, int len)  // go through the array of children and sort them according to their smallest keys
   {
     if(DEBUG) cout << "sorting children" << endl;
     nodePointer min = nullptr;    //minimum value
@@ -588,8 +612,10 @@ public:
     }
   }
 
-   // go through the array of children and sort them according to their smallest keys
-  void sortKeyValues(Pair *arr, int len)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // go through the keyValue pairs and sort them according to their smallest keys
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void sortKeyValues(Pair *arr, int len) // go through the keyValue pairs and sort them according to their smallest keys
   {
     Pair min = arr[0];    //minimum value
     int spot = len - 1;           //the spot of the minimum value
@@ -611,8 +637,10 @@ public:
     }
   }
 
-     // go through the array of children and sort them according to their smallest keys
-  void sortKeys(int *arr, int len)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // go through the array of keys and sort them according to the smallest keys
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void sortKeys(int *arr, int len) // go through the array of keys and sort them according to the smallest keys
   {
     int min = arr[0];    //minimum value
     int spot = len - 1;           //the spot of the minimum value
@@ -634,7 +662,11 @@ public:
     }
   }
 
-  void printNode(string name, nodePointer node)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  prints a given node with its name, in the form
+// name: [key1 key2 key3 ]
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printNode(string name, nodePointer node) //  prints a given node with its name
   {
     if(node == nullptr)
     {
@@ -648,12 +680,14 @@ public:
         cout << node->keys[i] << " ";
       }
       cout << "]" << endl;
-      //cout << "btw, numkeys in " << name << " were " << node->numKeys << endl;
     }
   }
 
-  // prints the key-value pairs
-  void printNodePairs(string name, nodePointer node)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // prints the given node's key-value pairs, in the form
+  // name: [key1(value1) key2(value2) key3(value3) ]
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printNodePairs(string name, nodePointer node) // prints the given node's key-value pairs
   {
     if(node == nullptr)
     {
@@ -668,12 +702,17 @@ public:
         cout << " ";
       }
       cout << "]" << endl;
-      //cout << "btw, numkeys in " << name << " were " << node->numKeys << endl;
     }
   }
 
-  // goes through the node and prints all the children on a new line
-  void printChildren(string name, nodePointer node)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // goes through the node and prints all the children on a new line, in the form
+  // name has 3 kids
+  // child: [key1 key2]
+  // child: [key1 key2]
+  // child: [key1 key2]
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printChildren(string name, nodePointer node) // prints all the children of a given node on a new line
   {
     if(node == nullptr)
     {
@@ -694,8 +733,10 @@ public:
     
   }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 // print the tree starting at the root, for maximum of 3 levels
-  void printTree()
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printTree()  // print the tree starting at the root, for maximum of 3 levels
   {
     cout << "PRINT-TREE" << endl;
     if(root == nullptr)
@@ -725,8 +766,14 @@ public:
     
   }
 
-  // print linked list starting with key1
-  void printLinkedList(int key1)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // prints the linked list starting with key1, in the form
+  // Linked list starting at key1
+  // linked list: [key1 key2]
+  // linked list: [key1 key2]
+  // linked list: [key1 key2]
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printLinkedList(int key1)  // prints the linked list starting with key1
   {
     if(root == nullptr)
     {
@@ -742,7 +789,10 @@ public:
     }
   }
 
-  void printLinkedListGivenPointer(nodePointer startHere)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+// print linked list starting at given nodePointer
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printLinkedListGivenPointer(nodePointer startHere) // print linked list starting at given nodePointer
   {
     cout << "Linked list starting at " << endl;
     printNode("linked list",startHere);
@@ -753,8 +803,10 @@ public:
     }
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // print linked list starting with key1
-  void printLinkedListPairs(int key1)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  void printLinkedListPairs(int key1) // print linked list starting with key1
   {
     if(root == nullptr)
     {
